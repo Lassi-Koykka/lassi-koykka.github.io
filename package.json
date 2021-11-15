@@ -1,0 +1,48 @@
+{
+  "name": "svelte-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "start": "sirv public --no-clear",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "prepare": "npm run smui-theme-light && npm run smui-theme-dark",
+    "smui-theme-light": "smui-theme compile public/build/smui.css -i src/theme",
+    "smui-theme-dark": "smui-theme compile public/build/smui-dark.css -i src/theme/dark"
+  },
+  "devDependencies": {
+    "@material/typography": "^13.0.0",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
+    "@rollup/plugin-typescript": "^8.0.0",
+    "@smui/button": "^5.0.0",
+    "@smui/card": "^5.0.0",
+    "@smui/drawer": "^5.0.0",
+    "@smui/fab": "^5.0.0",
+    "@smui/icon-button": "^5.0.0",
+    "@smui/layout-grid": "^5.0.0",
+    "@smui/list": "^5.0.0",
+    "@smui/paper": "^5.0.0",
+    "@smui/segmented-button": "^5.0.0",
+    "@tsconfig/svelte": "^2.0.0",
+    "rollup": "^2.3.4",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "sass": "^1.43.4",
+    "smui-theme": "^5.0.0",
+    "svelte": "^3.0.0",
+    "svelte-check": "^2.0.0",
+    "svelte-preprocess": "^4.0.0",
+    "tslib": "^2.0.0",
+    "typescript": "^4.0.0"
+  },
+  "dependencies": {
+    "sirv-cli": "^1.0.0",
+    "svelte-icons-pack": "^1.4.6",
+    "svelte-media-query": "^1.1.2"
+  }
+}

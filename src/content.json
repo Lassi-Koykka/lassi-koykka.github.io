@@ -1,0 +1,99 @@
+{
+    "name": "Lassi Köykkä",
+    "title": "Full-stack developer",
+    "subtitles": [
+        "Hiring a developer instead of using existing software solutions is like getting your suit from your tailor instead of a store.",
+        "Either you fit the suit or the suit fits you."
+    ],
+    "city": "Kuopio",
+    "hobbies": [
+        "Programming",
+        "Game development",
+        "Climbing",
+        "Gym",
+        "Running"
+    ],
+    "description": [
+        "I'm a dedicated and self-motivated software developer working in the greater Kuopio region. Originally I am from Tampere.",
+
+        "I'm comfortable working with both back- as well as front-end technologies and my main tools of trade are <strong style=\"color: #007acc\">TypeScript</strong>, <strong style=\"color: #61DAFB\">React</strong>, <strong style=\"color: #FF3E00\">Svelte</strong>, <strong style=\"color: #418C3C\">Node.js</strong>, <strong style=\"color: #512bd4\">.NET</strong> and <strong style=\"color: #FFDB4A\">Python</strong>, but I like to switch things up when I can and I'm not locked into any specific framework or language.",
+
+        "I'm a quick learner and I wish to understand how things actually operate under the hood. I thoroughly enjoy the process of creative problem-solving and challenging myself by setting goals and restrictions. On my spare time, I often like to work on all kinds of personal projects, from APIs to websites, games and desktop applications. One of my favourite pastimes is playing around with new technologies and seeing what I can come up with. I have built all kinds of fun little projects over the past few years and you can find all of them on my GitHub account. :)",
+        
+        "I reside in Kuopio and am currently writing my thesis in information technology at Savonia University of Applied Sciences."
+    ],
+    "workExperience": [
+        {
+            "jobTitle": "Software Developer",
+            "company": "Talentree Oy",
+            "from": "May 2021",
+            "to": "Present"
+        },
+        {
+            "jobTitle": "Summer trainee in Communications Technology",
+            "company": "Istekki Oy",
+            "from": "May 2020",
+            "to": "Aug 2020"
+        },
+        {
+            "jobTitle": "Summer trainee in Communications Technology",
+            "company": "Istekki Oy",
+            "from": "Jun 2019",
+            "to": "Sep 2019"
+        },
+        {
+            "jobTitle": "CNC Machine Operator",
+            "company": "Honpumet Oy",
+            "from": "May 2018",
+            "to": "Dec 2018"
+        }
+    ],
+    "education": [
+        {
+            "school": "Savonia University of Applied Sciences",
+            "degree": "Bachelor of Technology - Information Technology",
+            "from": "Jan 2019",
+            "to": "May 2022"
+        },
+        {
+            "school": "Tampereen klassillinen lukio",
+            "degree": "Finnish matriculation examination",
+            "from": "Aug 2015",
+            "to": "May 2018"
+        }
+    ],
+    
+    "skills": {
+        "technologies": {
+            "LanguagesAndFrameworks": [
+                "Typescript",
+                "React.js",
+                "Node.js/Express",
+                ".NET",
+                "Android",
+                "Svelte",
+                "Flask",
+                "Bootstrap",
+                "JavaScript/ES6",
+                "Python",
+                "C#",
+                "Java",
+                "Kotlin"
+            ],
+            "other": [
+                "AWS Cloud Services",
+                "Firebase",
+                "Docker",
+                "Linux Servers",
+                "Windows Servers",
+                "MongoDB",
+                "MySQL",
+                "MS SQL Server"
+            ]
+        }
+    },
+    "links": {
+        "github": "https://github.com/Lassi-Koykka",
+        "linkedin": "https://www.linkedin.com/in/lassi-koykka/"
+    }
+}
