@@ -13,7 +13,7 @@
   </div>
   <div class="name">{content.name}</div>
   <div class="title">{content.title}</div>
-  <code class="code">Code goes {brr}</code>
+  <code class="code">Code goes <wbr>{brr}</code>
   <div class="icons">
     <a href={content.links.github}>
       <Icon src={SiGithub} color="#fff"/>

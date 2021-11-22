@@ -5,18 +5,33 @@
   // Import components
   import Drawer from "./Components/Drawer.svelte";
   import Home from "./Components/Home.svelte";
-import About from "./Components/About.svelte";
+  import About from "./Components/About/About.svelte";
+
+  type Page = {
+    id: string;
+    name: string;
+    icon: string;
+  };
+
+  let pages: Page[] = [
+    { id: "home", name: "Home", icon: "home" },
+    { id: "about", name: "About me", icon: "person" },
+    { id: "projects", name: "Projects", icon: "handyman" },
+    { id: "contact", name: "Contact", icon: "mail" },
+  ];
+  
+  let active = pages[0];
   let drawerOpen = false;
 </script>
 
 <MediaQuery query="(min-width: 1281px)" let:matches>
-  <Drawer {matches} bind:open={drawerOpen}>
+  <Drawer {matches} bind:open={drawerOpen} bind:active={active}>
     <Fab
-      style="position: fixed;"
+      style="position: fixed; z-index: 999"
       color="primary"
       on:click={() => (drawerOpen = !drawerOpen)}
     >
-      <Icon class="material-icons" on:click={() => (drawerOpen = !drawerOpen)}>
+      <Icon class="material-icons">
         {#if !drawerOpen}
           menu
         {:else}
@@ -26,8 +41,13 @@ import About from "./Components/About.svelte";
     </Fab>
     <main>
       <div class="maindiv">
-        <!-- <Home /> -->
-        <About />
+        {#if active.id === "home"}
+          <Home />
+        {:else if active.id === "about"}
+          <About />
+        {:else}
+          <Home />
+        {/if}
       </div>
     </main>
   </Drawer>
@@ -44,7 +64,7 @@ import About from "./Components/About.svelte";
   .maindiv {
     max-width: 1000px;
     height: 100%;
-    margin: auto
+    margin: auto;
   }
 
   @media (orientation: landscape) {
