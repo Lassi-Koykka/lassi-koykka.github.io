@@ -9,7 +9,9 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "prepare": "npm run smui-theme-light && npm run smui-theme-dark",
     "smui-theme-light": "smui-theme compile public/build/smui.css -i src/theme",
-    "smui-theme-dark": "smui-theme compile public/build/smui-dark.css -i src/theme/dark"
+    "smui-theme-dark": "smui-theme compile public/build/smui-dark.css -i src/theme/dark",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d public"
   },
   "devDependencies": {
     "@material/typography": "^13.0.0",
@@ -27,6 +29,7 @@
     "@smui/paper": "^5.0.0",
     "@smui/segmented-button": "^5.0.0",
     "@tsconfig/svelte": "^2.0.0",
+    "gh-pages": "^3.2.3",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",

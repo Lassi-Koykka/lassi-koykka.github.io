@@ -6,6 +6,7 @@
   import Drawer from "./Components/Drawer.svelte";
   import Home from "./Components/Home.svelte";
   import About from "./Components/About/About.svelte";
+import Projects from "./Components/Projects.svelte";
 
   type Page = {
     id: string;
@@ -19,13 +20,13 @@
     { id: "projects", name: "Projects", icon: "handyman" },
     { id: "contact", name: "Contact", icon: "mail" },
   ];
-  
+
   let active = pages[0];
   let drawerOpen = false;
 </script>
 
 <MediaQuery query="(min-width: 1281px)" let:matches>
-  <Drawer {matches} bind:open={drawerOpen} bind:active={active}>
+  <Drawer {matches} bind:open={drawerOpen} bind:active>
     <Fab
       style="position: fixed; z-index: 999"
       color="primary"
@@ -45,6 +46,8 @@
           <Home />
         {:else if active.id === "about"}
           <About />
+        {:else if active.id === "projects"}
+          <Projects />
         {:else}
           <Home />
         {/if}

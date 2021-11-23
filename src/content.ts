@@ -89,35 +89,35 @@ const content = {
     skills: {
         technologies: {
             LanguagesAndFrameworks: [
-                {name: "Typescript", icon: SiTypescript, color: "#FFF"},
-                {name: "React.js", icon: SiReact, color: "#FFF"},
-                {name: "Node.js/Express", icon: SiNodeDotJs, color: "#FFF"},
-                {name: ".NET", icon: SiDotNet, color: "#FFF"},
-                {name: "Android", icon: SiAndroid, color: "#FFF"},
-                {name: "Svelte", icon: SiSvelte, color: "#FFF"},
-                {name: "Flask", icon: SiFlask, color: "#FFF"},
-                {name: "Bootstrap", icon: SiBootstrap, color: "#FFF"},
-                {name: "JavaScript/ES6", icon: SiJavascript, color: "#FFF"},
-                {name: "Python", icon: SiPython, color: "#FFF"},
-                {name: "C#", icon: SiCsharp, color: "#FFF"},
-                {name: "Java", icon: SiJava, color: "#FFF"},
-                {name: "Kotlin", icon: SiKotlin, color: "#FFF"},
+                {id: "typescript", name: "Typescript", icon: SiTypescript, color: "#2D79C7"},
+                {id: "react", name: "React.js", icon: SiReact, color: "#61DAFB"},
+                {id: "nodejs", name: "Node.js/Express", icon: SiNodeDotJs, color: "#659E60"},
+                {id: "dotnet", name: ".NET", icon: SiDotNet, color: "#512bd4"},
+                {id: "android", name: "Android", icon: SiAndroid, color: "#3EDC88"},
+                {id: "svelte", name: "Svelte", icon: SiSvelte, color: "#FF3C00"},
+                {id: "flask", name: "Flask", icon: SiFlask, color: "#FFF"},
+                {id: "bootstrap", name: "Bootstrap", icon: SiBootstrap, color: "#8512FB"},
+                {id: "javascript", name: "JavaScript/ES6", icon: SiJavascript, color: "#F0DB4F"},
+                {id: "python", name: "Python", icon: SiPython, color: "#3474A7"},
+                {id: "csharp", name: "C#", icon: SiCsharp, color: "#05930c"},
+                {id: "kotlin", name: "Kotlin", icon: SiKotlin, color: "#3297FF"},
+                {id: "java", name: "Java", icon: SiJava, color: "#FB0003"},
             ],
             other: [
-                {name: "AWS Cloud Services", icon: SiAmazonaws, color: "#FFF"},
-                {name: "Firebase", icon: SiFirebase, color: "#FFF"},
-                {name: "Docker", icon: SiDocker, color: "#FFF"},
+                {name: "AWS Cloud Services", icon: SiAmazonaws, color: "#F79400"},
+                {name: "Docker", icon: SiDocker, color: "#099CEC"},
+                {name: "Firebase", icon: SiFirebase, color: "#FFCB2B"},
                 {name: "Linux Servers", icon: SiLinux, color: "#FFF"},
-                {name: "Windows Servers", icon: SiWindows, color: "#FFF"},
-                {name: "MongoDB", icon: SiMongodb, color: "#FFF"},
-                {name: "MySQL", icon: SiMysql, color: "#FFF"},
-                {name: "MS SQL Server", icon: SiMicrosoftsqlserver, color: "#FFF"},
+                {name: "Windows Servers", icon: SiWindows, color: "#00AFEF"},
+                {name: "MongoDB", icon: SiMongodb, color: "#419D3A"},
+                {name: "MySQL", icon: SiMysql, color: "#00618A"},
+                {name: "MS SQL Server", icon: SiMicrosoftsqlserver, color: "#C42626"},
             ]
         }
     },
     links: {
-        "github": "https://github.com/Lassi-Koykka",
-        "linkedin": "https://www.linkedin.com/in/lassi-koykka/"
+        github: "https://github.com/Lassi-Koykka",
+        linkedin: "https://www.linkedin.com/in/lassi-koykka/",
     }
 }
 

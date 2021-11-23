@@ -1,7 +1,6 @@
 <script lang="ts">
   import Fab, { Label, Icon } from "@smui/fab";
 
-  import content from "src/content.json";
   import Description from "./Sections/Description.svelte";
   import Education from "./Sections/Education.svelte";
   import Toolbox from "./Sections/Toolbox.svelte";

@@ -2,9 +2,18 @@
   import Icon from 'svelte-icons-pack/Icon.svelte';
   import SiLinkedin from "svelte-icons-pack/si/SiLinkedin";
   import SiGithub from "svelte-icons-pack/si/SiGithub";  
+  import FiMail from "svelte-icons-pack/fi/FiMail"; 
 
-  import content from "src/content.json";
+  import content from "src/content";
+  import { onMount } from 'svelte';
   const brr = "<br><br><br>...";
+
+  let mailToLinkElement: HTMLAnchorElement;
+
+  onMount(() => {
+    let linkParts = ["mail","to:","me", "@", "lassi-koykka", ".fi"]
+    mailToLinkElement.href = linkParts.join("");
+  })
 </script>
 
 <main>
@@ -20,6 +29,9 @@
     </a>
     <a href={content.links.linkedin}>
       <Icon src={SiLinkedin} color="#fff"/>
+    </a>
+    <a href={"javascript:void(0)}"} bind:this={mailToLinkElement}>
+      <Icon src={FiMail} color="#FFF" />
     </a>
   </div>
 </main>
@@ -74,7 +86,7 @@
 
   .icons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     place-items: center;
     color: white;
     font-size: 4em;

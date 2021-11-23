@@ -1,5 +1,5 @@
 <script lang="ts">
-  import content from "src/content.json";
+  import content from "src/content";
 </script>
 
 <div class="text">

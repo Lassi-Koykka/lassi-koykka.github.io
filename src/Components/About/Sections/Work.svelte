@@ -1,7 +1,7 @@
 <script lang="ts">
 import Card, {Content} from "@smui/card";
 
-    import content from "src/content.json";
+    import content from "src/content";
 
     type Job = {
     jobTitle: string;
