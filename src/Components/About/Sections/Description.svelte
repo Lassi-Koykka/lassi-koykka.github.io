@@ -12,11 +12,11 @@
 
 <style lang="scss">
   .text {
-    padding: 0 1em;
     font-family: "Roboto";
     font-size: large;
     text-align: justify;
     max-width: 500px;
+    padding: 0 1em;
     margin: auto;
   }
 

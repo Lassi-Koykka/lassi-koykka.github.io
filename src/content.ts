@@ -47,25 +47,29 @@ const content = {
     ],
     workExperience: [
         {
-            jobTitle: "Software Developer",
+            jobTitle: "Full-Stack Software Developer",
             company: "Talentree Oy",
+            emoji: "👨‍💻",
             from: "May 2021",
             to: "Present"
         },
         {
             jobTitle: "Summer trainee in Communications Technology",
+            emoji: "📶",
             company: "Istekki Oy",
             from: "May 2020",
             to: "Aug 2020"
         },
         {
             jobTitle: "Summer trainee in Communications Technology",
+            emoji: "📶",
             company: "Istekki Oy",
             from: "Jun 2019",
             to: "Sep 2019"
         },
         {
             jobTitle: "CNC Machine Operator",
+            emoji: "🏭",
             company: "Honpumet Oy",
             from: "May 2018",
             to: "Dec 2018"
@@ -75,12 +79,14 @@ const content = {
         {
             school: "Savonia University of Applied Sciences",
             degree: "Bachelor of Technology - Information Technology",
+            emoji: "🖥️",
             from: "Jan 2019",
             to: "May 2022"
         },
         {
             school: "Tampereen klassillinen lukio",
             degree: "Finnish matriculation examination",
+            emoji: "🏫",
             from: "Aug 2015",
             to: "May 2018"
         }

@@ -1,7 +1,8 @@
 <script lang="ts">
   import content from "src/content";
   import Card, { Content } from "@smui/card";
-  import List, { Item, Text, PrimaryText, SecondaryText, } from "@smui/list";
+  import List, { Item, Text, PrimaryText, SecondaryText } from "@smui/list";
+  import LinearProgress from "@smui/linear-progress";
   import Icon from "svelte-icons-pack";
   import { onMount } from "svelte";
 
@@ -20,37 +21,35 @@
   // TODO Change to octokit and use graphql
   const getRepos = async () => {
     const reposUrl = "https://api.github.com/users/Lassi-Koykka/repos";
-    const response = await fetch(reposUrl)
+    const response = await fetch(reposUrl);
     const allRepos: Repo[] = await response.json();
 
     const repos: { [key: string]: Repo[] } = {};
 
     allRepos.forEach((r) => {
       const repo: Repo = {
-        name: r.name, 
+        name: r.name,
         updated_at: r.updated_at,
-        html_url: r.html_url, 
-        language: r.language, 
-        topics: r.topics, 
+        html_url: r.html_url,
+        language: r.language,
+        topics: r.topics,
         licence: r.licence,
       };
-      
+
       repo.topics.forEach((topic) => {
         repos[topic] === undefined
-          ? repos[topic] = [repo]
+          ? (repos[topic] = [repo])
           : repos[topic].push(repo);
       });
     });
-    console.log(repos)
+    console.log(repos);
     reposByTopic = repos;
   };
 
-  onMount(getRepos);  
-
-  
+  onMount(getRepos);
 </script>
 
-<main>
+<div class="toolbox">
   <Card>
     <h6 style="margin: 1em; text-decoration: underline;">
       Languages and libraries
@@ -62,10 +61,18 @@
             <Icon src={item.icon} color={item.color} size="2.5em" />
           </div>
           <Text>
-            <PrimaryText style={reposByTopic[item.id] && "margin-top: -10px"}>{item.name}</PrimaryText>
-            {#if reposByTopic[item.id]}
-              <SecondaryText>{reposByTopic[item.id].length} repos on github</SecondaryText>
-            {/if}
+            <div>
+              <strong>
+                {item.name}
+              </strong>
+              <div>
+                {#if reposByTopic[item.id]}
+                  {reposByTopic[item.id].length} repos on github
+                {:else}
+                  <LinearProgress indeterminate/>
+                {/if}
+              </div>
+            </div>
           </Text>
         </Item>
       {/each}
@@ -79,18 +86,19 @@
           <div class="iconContainer">
             <Icon src={item.icon} color={item.color} size="2.5em" />
           </div>
-          <Text>{item.name}</Text>
+          <strong>{item.name}</strong>
         </Item>
       {/each}
     </Content>
   </Card>
-</main>
+</div>
 
 <style lang="scss">
-  main {  
+  .toolbox {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2em;
+    padding: 0 1em;
     margin: auto;
   }
 
@@ -101,14 +109,14 @@
   }
 
   @media (min-width: 550px) {
-    main {
+    .toolbox {
       width: 100%;
       grid-template-columns: 1fr 1fr;
     }
 
-    .toolsSectionHeader {
-      height: 100%;
-      max-height: 2em;
-    }
+    // .toolsSectionHeader {
+    //   height: 100%;
+    //   max-height: 2em;
+    // }
   }
 </style>
