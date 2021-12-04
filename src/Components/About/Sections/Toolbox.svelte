@@ -68,8 +68,6 @@
               <div>
                 {#if reposByTopic[item.id]}
                   {reposByTopic[item.id].length} repos on github
-                {:else}
-                  <LinearProgress indeterminate/>
                 {/if}
               </div>
             </div>
