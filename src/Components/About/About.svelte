@@ -96,7 +96,7 @@
     text-align: center;
   }
 
-  @media (min-width: 350px) {
+  @media (min-width: 500px) {
     .img {
       width: auto;
       height: auto;

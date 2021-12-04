@@ -6,7 +6,53 @@
   import Drawer from "./Components/Drawer.svelte";
   import Home from "./Components/Home.svelte";
   import About from "./Components/About/About.svelte";
-import Projects from "./Components/Projects.svelte";
+  import Projects from "./Components/Projects.svelte";
+  import { getContext, onMount } from "svelte";
+
+
+  // // TODO Canvas cool stuff
+  // const c = document.createElement("canvas");
+  // c.style.pointerEvents = "none";
+  // c.style.position = "fixed";
+  // c.width = window.innerWidth;
+  // c.height = window.innerHeight;
+  // c.style.zIndex = "100000"
+  // const ctx = c.getContext("2d");
+  // ctx.strokeStyle = "#FF0000";
+  // let startRotation = 0;
+  // let r = 15;
+  // let mouseX = 0;
+  // let mouseY = 0;
+
+  // const draw = () => {
+  //   ctx.clearRect(0, 0, innerWidth, innerHeight);
+  //   const endRotation = (startRotation + Math.PI) % (Math.PI * 2);
+  //   ctx.beginPath();
+  //   ctx.arc(mouseX, mouseY, r, startRotation, endRotation);
+  //   ctx.stroke();
+  //   startRotation += 0.01 * Math.PI;
+  //   requestAnimationFrame(draw);
+  // };
+
+  // const handleMouseMove = (e: MouseEvent) => {
+  //   e.preventDefault();
+  //   mouseX = e.clientX - r / 2;
+  //   mouseY = e.clientY - r / 2;
+  // };
+
+  // const isTouchDevice = () => {
+  //   return (('ontouchstart' in window) ||
+  //    (navigator.maxTouchPoints > 0));
+  // }
+
+  // onMount(() => {
+  //   // Add cursor canvas
+  //     const bodyElement = document.getElementsByTagName("body")[0];
+  //     bodyElement.style.overflow = "none";
+  //     bodyElement.appendChild(c);
+  //     window.addEventListener("mousemove", handleMouseMove);
+  //     draw();
+  // });
 
   type Page = {
     id: string;
@@ -23,6 +69,8 @@ import Projects from "./Components/Projects.svelte";
 
   let active = pages[0];
   let drawerOpen = false;
+
+
 </script>
 
 <MediaQuery query="(min-width: 1281px)" let:matches>

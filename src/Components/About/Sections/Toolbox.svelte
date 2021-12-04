@@ -1,8 +1,7 @@
 <script lang="ts">
   import content from "src/content";
   import Card, { Content } from "@smui/card";
-  import List, { Item, Text, PrimaryText, SecondaryText } from "@smui/list";
-  import LinearProgress from "@smui/linear-progress";
+  import List, { Item, Text } from "@smui/list";
   import Icon from "svelte-icons-pack";
   import { onMount } from "svelte";
 
