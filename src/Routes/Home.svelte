@@ -4,6 +4,7 @@
   import SiGithub from "svelte-icons-pack/si/SiGithub";  
   import FiMail from "svelte-icons-pack/fi/FiMail"; 
 
+  import Lazy from 'svelte-lazy';
   import content from "src/content";
   import { onMount } from 'svelte';
   const brr = "<br><br><br>...";
@@ -18,7 +19,9 @@
 
 <main>
   <div class="mainImageContainer">
-    <img src="img/apu-logo.svg" alt="Apustaja" class="mainImage" />
+    <Lazy height={600}>
+      <img src="img/apu-logo.svg" alt="Apustaja" class="mainImage" />
+    </Lazy>
   </div>
   <div class="name">{content.name}</div>
   <div class="title">{content.title}</div>

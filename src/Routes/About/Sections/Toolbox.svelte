@@ -4,6 +4,7 @@
   import List, { Item, Text } from "@smui/list";
   import Icon from "svelte-icons-pack";
   import { onMount } from "svelte";
+  import Lazy from "svelte-lazy";
 
   interface Repo {
     name: string;
@@ -66,7 +67,9 @@
               </strong>
               <div>
                 {#if reposByTopic[item.id]}
-                  {reposByTopic[item.id].length} repos on github
+                  <Lazy>
+                    {reposByTopic[item.id].length} repos on github
+                  </Lazy>
                 {/if}
               </div>
             </div>

@@ -7,35 +7,38 @@
     Scrim,
     Subtitle,
   } from "@smui/drawer";
-  import IconButton from "@smui/icon-button";
   import List, { Graphic, Item, Text } from "@smui/list";
+  import { router } from "tinro"
+
   export let open: boolean;
   export let matches: boolean;
-  
+
   type Page = {
     id: string;
     name: string;
+    path: string;
     icon: string;
   };
-  
+
   let pages: Page[] = [
-    { id: "home", name: "Home", icon: "home" },
-    { id: "about", name: "About me", icon: "person" },
-    { id: "projects", name: "Projects", icon: "handyman" },
-    { id: "contact", name: "Contact", icon: "mail" },
+    { id: "home", name: "Home", path: "/", icon: "home" },
+    { id: "about", name: "About me", path: "/about", icon: "person" },
+    { id: "projects", name: "Projects", path: "/projects", icon: "handyman" },
+    { id: "contact", name: "Contact", path: "/contact", icon: "mail" },
   ];
-  
-  export let active;
-  
+  let active = pages.find(
+    (p) => p.path === "/" + (window.location.pathname.split("/").filter(p => p !== "")[0] || "")
+  );
+
   const handleClose = () => {
     open = false;
   };
 
   const setActive = (value: Page) => {
-    active = {...value};
+    active = { ...value };
+    router.goto(value.path)
     !matches && handleClose();
   };
-
 </script>
 
 <Drawer
@@ -51,11 +54,7 @@
   <Content style="">
     <List color="secondary">
       {#each pages as page}
-        <Item
-          href="javascript:void(0)"
-          on:click={() => setActive(page)}
-          activated={active.id === page.id}
-        >
+        <Item href="javascript:void(0)" activated={active.id === page.id} on:click={() => setActive(page)}>
           <Graphic class="material-icons">{page.icon}</Graphic>
           <Text>{page.name}</Text>
         </Item>
