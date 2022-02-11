@@ -3,7 +3,7 @@
   import { router, Route } from "tinro";
   import Fab, { Icon } from "@smui/fab";
   // Import components
-  import Drawer from "./Routes/Drawer.svelte";
+  import Drawer from "./Drawer.svelte";
   import Home from "./Routes/Home.svelte";
   import About from "./Routes/About/About.svelte";
   import Projects from "./Routes/Projects.svelte";
