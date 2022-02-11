@@ -7,7 +7,6 @@
   import Home from "./Routes/Home.svelte";
   import About from "./Routes/About/About.svelte";
   import Projects from "./Routes/Projects.svelte";
-  if(!location.host.includes("localhost")) router.base('/new');
 
   let drawerOpen = false;
 </script>
