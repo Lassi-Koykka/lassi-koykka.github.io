@@ -1,12 +1,13 @@
 <script lang="ts">
   import MediaQuery from "svelte-media-query";
-  import { Route } from "tinro";
+  import { router, Route } from "tinro";
   import Fab, { Icon } from "@smui/fab";
   // Import components
   import Drawer from "./Routes/Drawer.svelte";
   import Home from "./Routes/Home.svelte";
   import About from "./Routes/About/About.svelte";
   import Projects from "./Routes/Projects.svelte";
+  if(!location.host.includes("localhost")) router.base('/new');
 
   let drawerOpen = false;
 </script>
