@@ -21,11 +21,8 @@
   ];
 
   let selected = choices.find(
-    (c) =>
-      c.path ===
-      "/" +
-        (window.location.pathname.split("/").filter((s) => s !== "")[1] || "")
-  );
+    (c) => window.location.pathname.includes(c.path)
+    ) || choices[0]
 </script>
 
 <Lazy>

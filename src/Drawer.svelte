@@ -27,8 +27,8 @@
     { id: "contact", name: "Contact", path: "/contact", icon: "mail" },
   ];
   let active = pages.find(
-    (p) => p.path === "/" + (window.location.pathname.split("/").filter(p => p !== "")[0] || "")
-  );
+    (p) => (window.location.pathname.includes(p.path))
+  ) || pages[0];
 
   const handleClose = () => {
     open = false;
@@ -49,7 +49,7 @@
 >
   <Header class="material-icons">
     <Title>Lassi Köykkä</Title>
-    <Subtitle>{active.name}</Subtitle>
+    <Subtitle>{active ? active.name : ""}</Subtitle>
   </Header>
   <Content style="">
     <List color="secondary">
