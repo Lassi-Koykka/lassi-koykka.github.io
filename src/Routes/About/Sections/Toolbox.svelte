@@ -13,7 +13,6 @@
   import List, { Item, Meta, Text } from "@smui/list";
   import { onMount } from "svelte";
   import Lazy from "svelte-lazy";
-  import About from "../About.svelte";
 
   interface Repo {
     name: string;
