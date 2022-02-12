@@ -42,7 +42,7 @@
   </div>
   <div class="name">{content.name}</div>
   <div class="title">{content.title}</div>
-  <pre style="margin: 0; font-size: 1.5rem">"Haha, code goes"</pre>
+  <pre style="margin: 0; font-size: 1.75rem">"Haha, code goes"</pre>
   <code class="code"><wbr />{brrText}{cursor ? "|" : "\u00A0"}</code>
   <div class="icons">
     <a
