@@ -42,7 +42,7 @@
   </div>
   <div class="name">{content.name}</div>
   <div class="title">{content.title}</div>
-  <pre style="margin: 0; font-size: 1.75rem">"Haha, code goes"</pre>
+  <div style="margin: 0 0 -0.25em; font-size: 1.75rem; font-family: 'Roboto Mono', monospace">"Haha, code goes"</div>
   <code class="code"><wbr />{brrText}{cursor ? "|" : "\u00A0"}</code>
   <div class="icons">
     <a
@@ -130,7 +130,7 @@
 
   .mainImage {
     max-width: 80%;
-    max-height: 50vh;
+    max-height: 45vh;
     margin: auto;
     min-height: 150px;
   }
