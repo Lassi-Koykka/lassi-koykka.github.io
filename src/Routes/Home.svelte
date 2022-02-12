@@ -1,20 +1,37 @@
 <script lang="ts">
-  import Icon from 'svelte-icons-pack/Icon.svelte';
-  import SiGithub from "svelte-icons-pack/si/SiGithub";  
+  import Ripple from "@smui/ripple";
+  import Icon from "svelte-icons-pack/Icon.svelte";
   import SiLinkedin from "svelte-icons-pack/si/SiLinkedin";
-  import FiMail from "svelte-icons-pack/fi/FiMail"; 
+  import SiGithub from "svelte-icons-pack/si/SiGithub";
+  import FiMail from "svelte-icons-pack/fi/FiMail";
 
-  import Lazy from 'svelte-lazy';
+  import Lazy from "svelte-lazy";
   import content from "src/content";
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
+
+  let i = 0;
   const brr = "<br><br><br>...";
+  let brrText = "";
+  const typingSpeed = 50;
+  let cursor = true;
+
+  const typing = () => {
+    if (i < brr.length) {
+      cursor = true;
+      brrText = brrText.replace(" ", "").replace("|", "") + brr.charAt(i);
+      i += 1;
+      setTimeout(typing, typingSpeed);
+    }
+  };
 
   let mailToLinkElement: HTMLAnchorElement;
 
   onMount(() => {
-    let linkParts = ["mail","to:","me", "@", "lassi-koykka", ".fi"]
+    let linkParts = ["mail", "to:", "me", "@", "lassi-koykka", ".fi"];
     mailToLinkElement.href = linkParts.join("");
-  })
+    setInterval(() => (cursor = !cursor), 530);
+    setTimeout(typing, 2000);
+  });
 </script>
 
 <main>
@@ -25,22 +42,53 @@
   </div>
   <div class="name">{content.name}</div>
   <div class="title">{content.title}</div>
-  <code class="code">Code goes <wbr>{brr}</code>
+  <pre style="margin: 0; font-size: 1.5rem">"Haha, code goes"</pre>
+  <code class="code"><wbr />{brrText}{cursor ? "|" : "\u00A0"}</code>
   <div class="icons">
-    <a href={content.links.github}>
-      <Icon src={SiGithub} color="#fff"/>
+    <a
+      href={content.links.github}
+      use:Ripple={{ surface: true }}
+      style="padding: 8px; border-radius: 100%"
+    >
+      <Icon src={SiGithub} color="#fff" />
     </a>
-    <a href={content.links.linkedin}>
-      <Icon src={SiLinkedin} color="#fff"/>
+    <a
+      href={content.links.linkedin}
+      use:Ripple={{ surface: true }}
+      style="padding: 8px; border-radius: 5px"
+    >
+      <Icon src={SiLinkedin} color="#fff" />
     </a>
-    <a href={"javascript:void(0)}"} bind:this={mailToLinkElement}>
+    <a
+      href={"javascript:void(0)}"}
+      bind:this={mailToLinkElement}
+      use:Ripple={{ surface: true }}
+      style="padding: 8px; border-radius: 5px"
+    >
       <Icon src={FiMail} color="#FFF" />
     </a>
   </div>
 </main>
 
 <style lang="scss">
+  // Variables
   $breakpoint-phone: 768px;
+
+  // Animation
+  // @media (prefers-reduced-motion: no-preference) {
+  //   .mainImage {
+  //     animation: App-logo-spin infinite 20s linear;
+  //   }
+  // }
+
+  // @keyframes App-logo-spin {
+  //   from {
+  //     transform: rotate(360deg);
+  //   }
+  //   to {
+  //     transform: rotate(0deg);
+  //   }
+  // }
 
   main {
     display: grid;
@@ -106,15 +154,15 @@
       }
     }
     main {
-        gap: 1em;
-      }
+      gap: 1em;
+    }
 
     .title {
       font-size: 1.7rem;
     }
     .code {
-        font-size: 1.5rem;
-      }
+      font-size: 1.5rem;
+    }
     .name {
       font-size: 3rem;
       line-height: 2.6rem;
