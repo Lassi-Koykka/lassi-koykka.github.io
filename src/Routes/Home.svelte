@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from 'svelte-icons-pack/Icon.svelte';
-  import SiLinkedin from "svelte-icons-pack/si/SiLinkedin";
   import SiGithub from "svelte-icons-pack/si/SiGithub";  
+  import SiLinkedin from "svelte-icons-pack/si/SiLinkedin";
   import FiMail from "svelte-icons-pack/fi/FiMail"; 
 
   import Lazy from 'svelte-lazy';

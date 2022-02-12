@@ -1,27 +1,17 @@
 @use 'sass:color';
 
 @use '@material/theme/color-palette';
-@use "@material/layout-grid/mdc-layout-grid";
-
 
 // Svelte Colors! (Dark Theme)
-@use '@material/theme/index' as theme with (
-  $primary: color.scale(#5a8d3e, $whiteness: -10%),
+// Svelte Colors! (Dark Theme)
+@use '@material/theme/index'as theme with ($primary: color.scale(#5a8d3e, $whiteness: -10%),
   $secondary: color.scale(#4a66ff, $whiteness: -10%),
   $surface: color.adjust(color-palette.$grey-900, $blue: +4),
   $background: #292929,
-  $error: color-palette.$red-700
-  );
-  
-  // Import the mixins.
-  @use '@material/typography/index' as typography;
-  
-  @use "@material/drawer";
-  @use "@material/list";
-  @use "@material/fab";
-  @use "@material/segmented-button";
+  $error: color-palette.$red-700);
 
-
+// Import the mixins.
+@use '@material/typography/index'as typography;
 
 html,
 body {
@@ -39,6 +29,7 @@ body {
 a {
   color: #40b3ff;
 }
+
 a:visited {
   color: color.scale(#40b3ff, $lightness: -35%);
 }
@@ -46,48 +37,48 @@ a:visited {
 html {
   @include typography.typography('body1');
 }
- 
+
 h1 {
   @include typography.typography('headline1');
 }
- 
+
 h2 {
   @include typography.typography('headline2');
 }
- 
+
 h3 {
   @include typography.typography('headline3');
 }
- 
+
 h4 {
   @include typography.typography('headline4');
 }
- 
+
 h5 {
   @include typography.typography('headline5');
 }
- 
+
 h6 {
   @include typography.typography('headline6');
 }
- 
+
 caption {
   @include typography.typography('caption');
 }
- 
+
 code,
 pre {
   font-family: 'Roboto Mono', monospace;
 }
- 
+
 small {
   font-size: 0.9em;
 }
- 
+
 big {
   font-size: 1.1em;
 }
- 
+
 b,
 strong {
   font-weight: bold;

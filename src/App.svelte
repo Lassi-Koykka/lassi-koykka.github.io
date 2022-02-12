@@ -7,6 +7,8 @@
   import Home from "./Routes/Home.svelte";
   import About from "./Routes/About/About.svelte";
   import Projects from "./Routes/Projects.svelte";
+  
+  router.mode.hash()
 
   let drawerOpen = false;
 </script>
@@ -30,10 +32,10 @@
       <Route path="/about/*">
         <About />
       </Route>
-      <Route path="/projects">
+      <!-- <Route path="/projects">
         <Projects />
-      </Route>
-      <Route path="/">
+      </Route> -->
+      <Route path="/" fallback>
         <Home />
       </Route>
     </div>

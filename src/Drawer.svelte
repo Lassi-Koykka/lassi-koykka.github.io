@@ -23,8 +23,8 @@
   let pages: Page[] = [
     { id: "home", name: "Home", path: "/", icon: "home" },
     { id: "about", name: "About me", path: "/about", icon: "person" },
-    { id: "projects", name: "Projects", path: "/projects", icon: "handyman" },
-    { id: "contact", name: "Contact", path: "/contact", icon: "mail" },
+    // { id: "projects", name: "Projects", path: "/projects", icon: "handyman" },
+    // { id: "contact", name: "Contact", path: "/contact", icon: "mail" },
   ];
   let active = pages.find(
     (p) => (window.location.pathname.includes(p.path))
