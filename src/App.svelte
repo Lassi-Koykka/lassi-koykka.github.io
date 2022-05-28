@@ -32,9 +32,9 @@
       <Route path="/about/*">
         <About />
       </Route>
-      <!-- <Route path="/projects">
+      <Route path="/projects">
         <Projects />
-      </Route> -->
+      </Route>
       <Route path="/" fallback>
         <Home />
       </Route>

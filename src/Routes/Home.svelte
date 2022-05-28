@@ -30,7 +30,7 @@
     let linkParts = ["mail", "to:", "me", "@", "lassi-koykka", ".fi"];
     mailToLinkElement.href = linkParts.join("");
     setInterval(() => (cursor = !cursor), 530);
-    setTimeout(typing, 2000);
+    setTimeout(typing, 1000);
   });
 </script>
 

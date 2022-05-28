@@ -8,6 +8,7 @@ import SiFlask from "svelte-icons-pack/si/SiFlask";
 import SiBootstrap from "svelte-icons-pack/si/SiBootstrap";
 import SiJavascript from "svelte-icons-pack/si/SiJavascript";
 import SiPython from "svelte-icons-pack/si/SiPython";
+import SiRust from "svelte-icons-pack/si/SiRust";
 import SiCsharp from "svelte-icons-pack/si/SiCsharp";
 import SiJava from "svelte-icons-pack/si/SiJava";
 import SiKotlin from "svelte-icons-pack/si/SiKotlin";
@@ -91,7 +92,7 @@ const content = {
             to: "May 2018"
         }
     ],
-    
+
     skills: {
         technologies: {
             LanguagesAndFrameworks: [
@@ -107,6 +108,7 @@ const content = {
                 {id: "flask", name: "Flask", icon: SiFlask, color: "#FFF"},
                 {id: "csharp", name: "C#", icon: SiCsharp, color: "#05930c"},
                 {id: "kotlin", name: "Kotlin", icon: SiKotlin, color: "#3297FF"},
+                {id: "rust", name: "Rust", icon: SiRust, color: "#FF3C00"},
                 {id: "java", name: "Java", icon: SiJava, color: "#FB0003"},
             ],
             other: [
