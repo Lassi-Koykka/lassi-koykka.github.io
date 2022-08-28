@@ -59,7 +59,7 @@
   let open = false;
   let tech: { name: string; repos: Repo[] } = null;
 
-  const setTech = (key) => {
+  const setTech = (key: any) => {
     if (reposByTopic[key]) {
       const item = LanguagesAndFrameworks.find(
         (x) => x.id === key

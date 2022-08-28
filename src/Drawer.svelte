@@ -22,10 +22,12 @@
 
   let pages: Page[] = [
     { id: "home", name: "Home", path: "/", icon: "home" },
-    { id: "about", name: "About me", path: "/about", icon: "person" },
-    { id: "projects", name: "Projects", path: "/projects", icon: "handyman" },
-    // { id: "contact", name: "Contact", path: "/contact", icon: "mail" },
+    { id: "about", name: "Who dis?", path: "/about", icon: "person" },
+    { id: "toolbox", name: "My toolbox", path: "/about/toolbox", icon: "home_repair_service" },
+    { id: "work", name: "Work history", path: "/about/work", icon: "work" },
+    { id: "education", name: "Education", path: "/about/education", icon: "school" },
   ];
+
   let active = pages.find(
     (p) => (window.location.pathname.includes(p.path))
   ) || pages[0];

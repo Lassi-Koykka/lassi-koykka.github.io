@@ -21,7 +21,7 @@
   ];
 
   let selected = choices.find(
-    (c) => window.location.pathname.includes(c.path)
+    (c) => window.location.pathname.endsWith(c.path)
     ) || choices[0]
 </script>
 
