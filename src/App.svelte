@@ -1,61 +1,24 @@
 <script lang="ts">
-  import MediaQuery from "svelte-media-query";
-  import { router, Route } from "tinro";
-  import Fab, { Icon } from "@smui/fab";
-  // Import components
-  import Drawer from "./Drawer.svelte";
-  import Home from "./Routes/Home.svelte";
-  import About from "./Routes/About/About.svelte";
-  import Projects from "./Routes/Projects.svelte";
-  
-  router.mode.hash()
+  import content from "./content";
+    import About from "./lib/About.svelte";
+    import Hero from "./lib/Hero.svelte";
+    import Projects from "./lib/Projects.svelte";
+    import Toolbox from "./lib/Toolbox.svelte";
+  const { subtitles, links, city } = content;
 
-  let drawerOpen = false;
 </script>
 
-<MediaQuery query="(min-width: 1281px)" let:matches>
-  <Drawer {matches} bind:open={drawerOpen}>
-    <Fab
-      style="position: fixed; z-index: 999"
-      color="primary"
-      on:click={() => (drawerOpen = !drawerOpen)}
-    >
-      <Icon class="material-icons">
-        {#if !drawerOpen}
-          menu
-        {:else}
-          close
-        {/if}
-      </Icon>
-    </Fab>
-    <div class="maindiv">
-      <Route path="/about/*">
-        <About />
-      </Route>
-      <!-- <Route path="/projects">
-        <Projects />
-      </Route> -->
-      <Route path="/" fallback>
-        <Home />
-      </Route>
-    </div>
-  </Drawer>
-</MediaQuery>
+<main class="snap-y max-w-screen max-h-screen overflow-x-hidden overflow-y-scroll">
+  <div class="snap-start hero min-h-screen h:auto">
+    <Hero/>
+  </div>
+  <div class="snap-start w-screen">
+    <About/>
+  </div>
+  <div class="snap-start min-h-screen w-screen">
+    <Toolbox/>
+  </div>
+</main>
 
-<style lang="scss">
-  .maindiv {
-    display: grid;
-    align-content: center;
-
-    width: 100% !important;
-    max-width: 1000px;
-    height: 100%;
-    margin: auto;
-  }
-
-  @media (orientation: landscape) {
-    .maindiv {
-      width: max-content;
-    }
-  }
+<style>
 </style>

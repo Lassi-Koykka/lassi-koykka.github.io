@@ -1,0 +1,87 @@
+<script lang="ts">
+  import { onMount } from "svelte";
+  import content from "../content";
+  import Icon from "svelte-icons-pack/Icon.svelte";
+  import SiGithub from "svelte-icons-pack/si/SiGithub";
+  import SiLinkedin from "svelte-icons-pack/si/SiLinkedin";
+  const { subtitles, links } = content;
+  const { github, linkedin } = links;
+
+  let idx = 0;
+  let timeout: NodeJS.Timer;
+  const next = () => {
+    document
+      .getElementById("subtitle-" + idx)
+      .scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start",
+      });
+    idx = (idx + 1) % subtitles.length;
+    reset();
+  };
+  const reset = () => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(next, 2500);
+  };
+  onMount(next);
+</script>
+
+<main class="max-w-screen">
+  <div class="hero h-screen h:auto">
+    <div class="hero-content flex-col gap-4 sm:gap-12 text-center">
+      <img
+        src="https://avatars.githubusercontent.com/u/47752198"
+        alt="Me"
+        class="w-4/5 max-w-sm rounded-full shadow-2xl"
+      />
+      <div class="max-w-md flex flex-col gap-4">
+        <h1 class="text-accent text-5xl font-bold font-mono">Lassi Köykkä</h1>
+        <div class="flex flex-row mx-auto gap-4 h-[2.5rem]">
+          <div class="text-3xl sm:text-4xl text-white whitespace-nowrap">
+            <span class="text-primary">$</span> cd
+          </div>
+          <div
+            class="h-[2.5rem] sm:h-20 carousel carousel-vertical carousel-center text-left"
+            on:scroll={reset}
+          >
+            {#each subtitles as l, i}
+              <div
+                id={"subtitle-" + i}
+                class={`carousel-item h-full text-white text-3xl sm:text-4xl`}
+              >
+                {l}
+              </div>
+            {/each}
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-8">
+        <button
+          class="btn-lg btn-circle btn-ghost"
+          on:click={(e) => {
+            e.preventDefault();
+            location.assign(github);
+          }}
+        >
+          <Icon color="white" src={SiGithub} size="80%" className="m-auto" />
+        </button>
+        <button
+          class="btn-lg btn-circle btn-ghost"
+          on:click={(e) => {
+            e.preventDefault();
+            location.assign(linkedin);
+          }}
+        >
+          <Icon color="white" src={SiLinkedin} size="75%" className="m-auto" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h1 class="text-4xl m-auto">My Projects:</h1>
+  </div>
+</main>
+
+<style>
+</style>

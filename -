@@ -1,0 +1,46 @@
+<script lang="ts">
+    import { onMount } from "svelte";
+
+  import {Repo} from "../types"
+  const { LanguagesAndFrameworks, other } = content.skills.technologies
+  let reposByTopic: { [key: string]: Repo[] } = {};
+  // TODO Change to octokit and use graphql
+  const getRepos = async () => {
+    const reposUrl = "https://api.github.com/users/Lassi-Koykka/repos";
+    const response = await fetch(reposUrl);
+    const allRepos: Repo[] = await response.json();
+    const repos: { [key: string]: Repo[] } = {};
+    allRepos.forEach((r) => {
+      const repo: Repo = {
+        name: r.name,
+        updated_at: r.updated_at,
+        html_url: r.html_url,
+        language: r.language,
+        topics: r.topics,
+        licence: r.licence,
+      };
+      repo.topics.forEach((topic) => {
+        repos[topic] === undefined
+          ? (repos[topic] = [repo])
+          : repos[topic].push(repo);
+      });
+    });
+    console.log(repos);
+    reposByTopic = repos;
+  };
+  let open = false;
+  let tech: { name: string; repos: Repo[] } = null;
+  const setTech = (key: any) => {
+    if (reposByTopic[key]) {
+      const item = LanguagesAndFrameworks.find(
+        (x) => x.id === key
+      );
+      if (!item) return;
+      tech = {
+        name: item.name,
+        repos: reposByTopic[item.id],
+      };
+      open = true;
+    }
+  };
+  onMount(getRepos);</script>
