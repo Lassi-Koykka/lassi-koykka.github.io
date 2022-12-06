@@ -46,50 +46,51 @@
   });
 </script>
 
-<div class="hero-content flex-col gap-4 sm:gap-8 text-center">
-  <img
-    src="https://avatars.githubusercontent.com/u/47752198"
-    alt="Me"
-    class="w-3/5 sm:w-4/5 max-w-sm rounded-full shadow-2xl"
-  />
-  <div class="max-w-md flex flex-col gap-4">
-    <h1 class="text-accent text-4xl sm:text-5xl font-bold font-mono">Lassi Köykkä</h1>
-    <div class="flex flex-row gap-4">
-      <div class="text-3xl sm:text-4xl text-white whitespace-nowrap">
-        <span class="text-primary">$</span> cd
+<div class="hero h-auto min-h-screen">
+  <div class="hero-content flex-col gap-4 sm:gap-8 text-center">
+    <img
+      src="https://avatars.githubusercontent.com/u/47752198"
+      alt="Me"
+      class="w-3/5 sm:w-4/5 max-w-sm rounded-full shadow-2xl"
+    />
+    <div class="max-w-md flex flex-col gap-4">
+      <h1 class="text-accent text-4xl sm:text-5xl font-bold font-mono">Lassi Köykkä</h1>
+      <div class="flex flex-row gap-4">
+        <div class="text-3xl sm:text-4xl text-white whitespace-nowrap">
+          <span class="text-primary">$</span> cd
+        </div>
+        <code class={`h-full text-white text-3xl sm:text-4xl`}>
+          {text}{cursor ? "|" : "\u00A0"}
+        </code>
       </div>
-      <code class={`h-full text-white text-3xl sm:text-4xl`}>
-        {text}{cursor ? "|" : "\u00A0"}
-      </code>
+    </div>
+  <div class="text-2xl sm:text-3xl">
+    Full-stack developer
+    <div class="text-error">@</div>
+    Talentree</div>
+    <div class="flex gap-8">
+      <a href={github}>
+        <button
+          class="btn-lg btn-circle btn-ghost"
+        >
+          <Icon color="white" src={SiGithub} size="80%" className="m-auto" />
+        </button>
+      </a>
+      <a href={linkedin}>
+        <button class="btn-lg btn-circle btn-ghost">
+          <Icon
+            color="white"
+            src={SiLinkedin}
+            size="75%"
+            className="m-auto"
+          />
+        </button>
+      </a>
+      <a bind:this={mailToLinkElement} href="/">
+        <button class="btn-lg btn-circle btn-ghost">
+          <Icon color="white" src={SiEmail} size="80%" className="m-auto" />
+        </button>
+      </a>
     </div>
   </div>
-<div class="text-2xl sm:text-3xl">
-  Full-stack developer
-  <div class="text-error">@</div>
-  Talentree</div>
-  <div class="flex gap-8">
-    <a href={github}>
-      <button
-        class="btn-lg btn-circle btn-ghost"
-      >
-        <Icon color="white" src={SiGithub} size="80%" className="m-auto" />
-      </button>
-    </a>
-    <a href={linkedin}>
-      <button class="btn-lg btn-circle btn-ghost">
-        <Icon
-          color="white"
-          src={SiLinkedin}
-          size="75%"
-          className="m-auto"
-        />
-      </button>
-    </a>
-    <a bind:this={mailToLinkElement} href="/">
-      <button class="btn-lg btn-circle btn-ghost">
-        <Icon color="white" src={SiEmail} size="80%" className="m-auto" />
-      </button>
-    </a>
-  </div>
 </div>
-

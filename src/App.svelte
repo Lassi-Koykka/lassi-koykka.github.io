@@ -11,7 +11,7 @@
 </script>
 
 <main class="snap-y max-w-screen max-h-screen overflow-x-hidden overflow-y-scroll flex flex-col gap-4">
-  <div id="hero" class="snap-start hero min-h-screen h:auto">
+  <div id="hero" class="snap-start h:auto">
     <Hero/>
   </div>
   <div id="#about" class="snap-start w-screen ">
