@@ -1,16 +1,32 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import AiClose from "svelte-icons-pack/ai/AiOutlineCloseCircle";
   import SiGithub from "svelte-icons-pack/si/SiGithub";
   import Icon from "svelte-icons-pack/Icon.svelte";
-  import type {Repo} from "../types"
-  import content from "../content"
+  import type { Repo } from "../types";
+  import content from "../content";
+  const t = content.skills.technologies;
 
-  const { LanguagesAndFrameworks, other } = content.skills.technologies
+  interface Category {
+    title: string;
+    repos: typeof t.languagesAndFrameworks;
+  }
+  const categories: Category[] = [
+    {
+      title: "Languages and frameworks:",
+      repos: t.languagesAndFrameworks,
+    },
+    {
+      title: "Other:",
+      repos: t.other,
+    },
+  ];
+
   let reposByTopic: { [key: string]: Repo[] } = {};
   // TODO Change to octokit and use graphql
   const getRepos = async () => {
     const reposUrl = "https://api.github.com/users/Lassi-Koykka/repos";
-    const response = await fetch(reposUrl, { cache: 'no-cache'});
+    const response = await fetch(reposUrl, { cache: "no-cache" });
     const allRepos: Repo[] = await response.json();
     const repos: { [key: string]: Repo[] } = {};
     allRepos.forEach((r) => {
@@ -35,9 +51,7 @@
   let tech: { name: string; repos: Repo[] } = null;
   const setTech = (key: any) => {
     if (reposByTopic[key]) {
-      const item = LanguagesAndFrameworks.find(
-        (x) => x.id === key
-      );
+      const item = categories.flatMap((c) => c.repos).find((x) => x.id === key);
       if (!item) return;
       tech = {
         name: item.name,
@@ -49,41 +63,50 @@
   onMount(getRepos);
 </script>
 
-<h1 class="w-full text-4xl text-center my-8">Toolbox:</h1>
-
-
-  <h1 class="w-full text-2xl text-center my-8 underline">Languages and frameworks:</h1>
-<div class="grid grid-cols-2 gap-1 mx-1 sm:mx-auto max-w-md">
-  {#each LanguagesAndFrameworks as item}
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <label for={reposByTopic[item.id]?.length ? "my-modal": ""} class="relative btn btn-outline sm:btn-lg gap-2" on:click={() => setTech(item.id)}>
-      <Icon src={item.icon} color={item.color} size="2em" />
-      <strong>
-      {item.name}
-      {#if reposByTopic[item.id]?.length}
-        <span class="badge badge-ghost sm:badge-lg text-black absolute right-0 top-0">
-          {reposByTopic[item.id]?.length}
-        </span>
-      {/if}
-      </strong>
-    </label>
-  {/each}
-</div>
+<h1 class="w-full text-3xl sm:text-4xl text-center pt-8">Tools and repos:</h1>
+{#each categories as c}
+  <h1 class="w-full text-xl sm:text-2xl text-center my-8 underline">
+    {c.title}
+  </h1>
+  <div class="grid grid-cols-2 gap-1 mx-1 sm:mx-auto max-w-md">
+    {#each c.repos as item}
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <label
+        for={reposByTopic[item.id]?.length ? "my-modal" : ""}
+        class="relative btn btn-outline  sm:btn-lg gap-2 flex-nowrap"
+        on:click={() => setTech(item.id)}
+      >
+        <Icon src={item.icon} color={item.color} size="2em" />
+        <strong>
+          {item.name}
+          {#if reposByTopic[item.id]?.length}
+            <span
+              class="badge badge-ghost sm:badge-lg text-black absolute right-0 top-0"
+            >
+              {reposByTopic[item.id]?.length}
+            </span>
+          {/if}
+        </strong>
+      </label>
+    {/each}
+  </div>
+{/each}
 
 <input bind:value={open} type="checkbox" id="my-modal" class="modal-toggle" />
-<label for="my-modal" class="modal cursor-pointer">
-  <label class="modal-box relative" for="">
-  {#if !!tech}
-    <h3 class="text-lg font-bold">{tech.name}</h3>
-    {#each tech.repos as repo}
+<label for="my-modal" class="modal  cursor-pointer">
+  <label class="modal-box relative overflow-x-clip" for="">
+    <label for="my-modal" class="absolute btn-circle top-4 right-2 gap-2">
+      <Icon color="white" src={AiClose} size="2em" />
+    </label>
+    {#if !!tech}
+      <h3 class="text-lg font-bold">{tech.name}</h3>
+      {#each tech.repos as repo}
         <div>
-          <h6
-            class="repo-section-header"
-          >
+          <h6>
             <span>
               <a href={repo.html_url}>
                 <button
-                  class="btn btn-lg btn-ghost w-full justify-start gap-4"
+                  class="btn btn-md sm:btn-lg btn-ghost w-full justify-start gap-4 flex-nowrap"
                 >
                   <Icon color="white" src={SiGithub} size="2.25em" />
                   {repo.name}
@@ -95,8 +118,10 @@
           <div class="flex flex-wrap gap-1">
             {#each repo.topics as t}
               <button
-                class="btn btn-sm btn-secondary btn-outline "
-                disabled={!LanguagesAndFrameworks.some(x => x.id === t)}
+                class="btn btn-sm btn-secondary btn-outline"
+                disabled={!categories
+                  .flatMap((c) => c.repos)
+                  .some((x) => x.id === t)}
                 on:click={() => setTech(t)}
               >
                 <span style="white-space: nowrap">{t}</span>
@@ -104,10 +129,12 @@
             {/each}
           </div>
         </div>
-        <hr style="margin: 16px 0; border-bottom: none; border-right: none; border-left: none">
+        <hr
+          style="margin: 16px 0; border-bottom: none; border-right: none; border-left: none"
+        />
       {/each}
-  {:else}
-    <span class="btn btn-circle btn-lg bg-transparent border-none loading"/>
-  {/if}
+    {:else}
+      <span class="btn btn-circle btn-lg bg-transparent border-none loading" />
+    {/if}
   </label>
 </label>

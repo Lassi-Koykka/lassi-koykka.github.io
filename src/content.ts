@@ -4,22 +4,26 @@ import SiNodeDotJs from "svelte-icons-pack/si/SiNodedotjs";
 import SiDotNet from "svelte-icons-pack/si/SiDotnet";
 import SiAndroid from "svelte-icons-pack/si/SiAndroid";
 import SiSvelte from "svelte-icons-pack/si/SiSvelte";
-import SiFlask from "svelte-icons-pack/si/SiFlask";
-import SiBootstrap from "svelte-icons-pack/si/SiBootstrap";
 import SiJavascript from "svelte-icons-pack/si/SiJavascript";
 import SiPython from "svelte-icons-pack/si/SiPython";
 import SiCsharp from "svelte-icons-pack/si/SiCsharp";
 import SiJava from "svelte-icons-pack/si/SiOpenjdk";
+import SiPHP from "svelte-icons-pack/si/SiPhp";
 import SiGo from "svelte-icons-pack/si/SiGo";
 import SiKotlin from "svelte-icons-pack/si/SiKotlin";
 import SiAmazonaws from "svelte-icons-pack/si/SiAmazonaws";
 import SiFirebase from "svelte-icons-pack/si/SiFirebase";
 import SiDocker from "svelte-icons-pack/si/SiDocker";
 import SiLinux from "svelte-icons-pack/si/SiLinux";
-import SiWindows from "svelte-icons-pack/si/SiWindows";
+import SiUnity from "svelte-icons-pack/si/SiUnity";
+import SiGodot from "svelte-icons-pack/si/SiGodotengine";
 import SiMongodb from "svelte-icons-pack/si/SiMongodb";
 import SiMysql from "svelte-icons-pack/si/SiMysql";
 import SiMicrosoftsqlserver from "svelte-icons-pack/si/SiMicrosoftsqlserver";
+import SiGraphql from "svelte-icons-pack/si/SiGraphql";
+import SiCypress from "svelte-icons-pack/si/SiCypress";
+import SiHacking from "svelte-icons-pack/si/SiTryhackme";
+import BsTree from "svelte-icons-pack/bs/BsTree"; 
 
 
 const content = {
@@ -113,32 +117,36 @@ const content = {
     
     skills: {
         technologies: {
-            LanguagesAndFrameworks: [
+            languagesAndFrameworks: [
                 {id: "typescript", name: "Typescript", icon: SiTypescript, color: "#2D79C7"},
                 {id: "go", name: "Go", icon: SiGo, color: "#79d4fd"},
                 {id: "svelte", name: "Svelte", icon: SiSvelte, color: "#FF3C00"},
                 {id: "react", name: "React.js", icon: SiReact, color: "#61DAFB"},
                 {id: "nodejs", name: "Node.js", icon: SiNodeDotJs, color: "#659E60"},
                 {id: "dotnet", name: ".NET", icon: SiDotNet, color: "#512bd4"},
-                {id: "android", name: "Android", icon: SiAndroid, color: "#3EDC88"},
-                {id: "bootstrap", name: "Bootstrap", icon: SiBootstrap, color: "#8512FB"},
                 {id: "javascript", name: "JavaScript", icon: SiJavascript, color: "#F0DB4F"},
                 {id: "python", name: "Python", icon: SiPython, color: "#3474A7"},
-                {id: "flask", name: "Flask", icon: SiFlask, color: "#FFF"},
                 {id: "csharp", name: "C#", icon: SiCsharp, color: "#05930c"},
                 {id: "kotlin", name: "Kotlin", icon: SiKotlin, color: "#3297FF"},
+                {id: "php", name: "PHP", icon: SiPHP, color: "#4f5b93"},
                 {id: "java", name: "Java", icon: SiJava, color: "#FB0003"},
             ],
             other: [
-                {name: "AWS Cloud Services", icon: SiAmazonaws, color: "#F79400"},
-                {name: "Firebase", icon: SiFirebase, color: "#FFCB2B"},
-                {name: "Docker", icon: SiDocker, color: "#099CEC"},
-                {name: "Linux Servers", icon: SiLinux, color: "#FFF"},
-                {name: "Windows Servers", icon: SiWindows, color: "#00AFEF"},
-                {name: "MongoDB", icon: SiMongodb, color: "#419D3A"},
-                {name: "MySQL", icon: SiMysql, color: "#00618A"},
-                {name: "MS SQL Server", icon: SiMicrosoftsqlserver, color: "#C42626"},
-            ]
+                {id: "aws", name: "AWS Cloud", icon: SiAmazonaws, color: "#F79400"},
+                {id: "graphql", name: "GraphQL", icon: SiGraphql, color: "#e632ad"},
+                {id: "firebase", name: "Firebase", icon: SiFirebase, color: "#FFCB2B"},
+                {id: "docker", name: "Docker", icon: SiDocker, color: "#099CEC"},
+                {id: "cypress", name: "Cypress", icon: SiCypress, color: "#C42626"},
+                {id: "android", name: "Android", icon: SiAndroid, color: "#3EDC88"},
+                {id: "unity", name: "Unity", icon: SiUnity, color: "#f3f3f3"},
+                {id: "godot", name: "Godot", icon: SiGodot, color: "#478cbf"},
+                {id: "mongodb", name: "MongoDB", icon: SiMongodb, color: "#419D3A"},
+                {id: "mysql", name: "MySQL", icon: SiMysql, color: "#00618A"},
+                {id: "mssql", name: "MS SQL Server", icon: SiMicrosoftsqlserver, color: "#C42626"},
+                {id: "linux_admin", name: "Linux admin", icon: SiLinux, color: "#FFF"},
+                {id: "hacking", name: "Hacking", icon: SiHacking, color: "#419D3A"},
+                {id: "coding-challenge", name: "Challenges", icon: BsTree, color: "#512bd4"},
+            ],
         }
     },
     links: {
