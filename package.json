@@ -14,8 +14,12 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^1.0.0",
 		"@sveltejs/kit": "^1.0.0",
+		"@tailwindcss/typography": "^0.5.8",
 		"autoprefixer": "^10.4.7",
 		"daisyui": "^2.46.0",
+		"mdsvex": "^0.10.6",
+		"postcss": "^8.4.14",
+		"postcss-load-config": "^4.0.1",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
 		"prettier-plugin-tailwindcss": "^0.2.1",
@@ -25,9 +29,7 @@
 		"tailwindcss": "^3.2.4",
 		"tslib": "^2.4.1",
 		"typescript": "^4.9.3",
-		"vite": "^4.0.0",
-		"postcss": "^8.4.14",
-		"postcss-load-config": "^4.0.1"
+		"vite": "^4.0.0"
 	},
 	"type": "module",
 	"dependencies": {
