@@ -8,3 +8,8 @@ export interface Repo {
       name: string;
     };
 }
+
+export interface IMetadata {
+	title?: string;
+	date?: string;
+}

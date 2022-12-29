@@ -1,5 +1,5 @@
 <script lang="ts">
-  import content from "../content";
+  import content from "$content";
   const { workExperience } = content;
 </script>
 
