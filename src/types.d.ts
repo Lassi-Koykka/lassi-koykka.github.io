@@ -9,7 +9,9 @@ export interface Repo {
     };
 }
 
-export interface IMetadata {
+export interface PostMetadata {
 	title?: string;
 	date?: string;
+    updated?: string;
+    slug: string
 }

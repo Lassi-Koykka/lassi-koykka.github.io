@@ -5,6 +5,10 @@
 	const { title, date, Content } = data;
 </script>
 
+<svelte:head>
+  <title>Blog: {title}</title>
+</svelte:head>
+
 <a class="btn-ghost btn-circle btn fixed top-2 left-2 bg-neutral text-white" href="/posts">
     <BackArrow />
 </a>

@@ -1,10 +1,10 @@
 import { basename, dirname } from 'path'
-import type { IMetadata } from 'src/types'
+import type { PostMetadata } from 'src/types'
 
 export const getPosts = async () => {
   // taken from josh-collinsworth's blog starter! Thanks Josh!
   // https://github.com/josh-collinsworth/sveltekit-blog-starter/blob/main/src/routes/api/posts/index.json.js
-  const posts: (IMetadata & {slug: string})[] = await Promise.all(
+  const posts: (PostMetadata)[] = await Promise.all(
     Object.entries(import.meta.glob('../../posts/**/*.md')).map(
       async ([path, resolver]) => {
         const { metadata }: any = await resolver()
@@ -20,7 +20,7 @@ export const getPosts = async () => {
 
   sortedPosts = sortedPosts.map(post => ({
     ...post,
-  }))
+  })).filter(p => !p.slug.startsWith("_"))
 
   return {
     posts: sortedPosts,

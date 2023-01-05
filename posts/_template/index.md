@@ -1,4 +1,4 @@
 ---
-title: 404 Not found
+title: Template
 date: ""
 ---
