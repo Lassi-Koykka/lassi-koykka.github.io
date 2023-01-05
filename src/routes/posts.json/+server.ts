@@ -1,4 +1,4 @@
-import { getPosts } from '$lib/posts'
+import { getPosts } from '$lib/server/posts'
 
 export async function GET() {
   const { posts } = await getPosts()
