@@ -104,7 +104,7 @@ const content = {
             degree: "Bachelor of Technology - Information Technology",
             emoji: "🖥️",
             from: "Jan 2019",
-            to: "May 2022"
+            to: "Dec 2022"
         },
         {
             school: "Tampereen klassillinen lukio",
