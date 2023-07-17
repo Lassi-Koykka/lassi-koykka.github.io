@@ -9,12 +9,13 @@ export const load: Load = async ({ params }) => {
         throw redirect(300, "/posts")
     });
     if(!post) throw redirect(300, "/posts")
-	const { title, date }: PostMetadata = post.metadata;
+	const { title, date, updated }: PostMetadata = post.metadata;
 	const Content = post.default;
 
 	return {
 		Content,
 		title,
-		date
+		date,
+		updated
 	};
 };

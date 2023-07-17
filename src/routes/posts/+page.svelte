@@ -14,7 +14,7 @@
     <BackArrow />
 </a>
 
-<div class="max-w-5xl mx-auto mt-14 px-4 w-full">
+<div class="max-w-5xl mx-auto mt-14 px-4 md:px-8 w-auto">
 	<h1 class="text-4xl md:text-7xl text-center text-accent">Blog posts</h1>
 	<h1 class="text-4xl md:text-7xl text-center">---</h1>
 	
@@ -25,7 +25,7 @@
 	{/if}
 	{#each posts as p}
 		<div class="m-auto">
-			<h2 class="text-lg md:text-2xl">{p.date} {p.updated ? "Updated: " + p.updated : ""}</h2>
+			<h2 class="text-lg md:text-2xl w-max">{p.date} {p.updated ? "Updated: " + p.updated : ""}</h2>
 			<a href={"/posts/" + p.slug} class="text-2xl md:text-4xl underline hover:text-primary">{p.title}</a>
 		</div>
 	{/each}

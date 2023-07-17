@@ -5,7 +5,7 @@ export const getPosts = async () => {
   // taken from josh-collinsworth's blog starter! Thanks Josh!
   // https://github.com/josh-collinsworth/sveltekit-blog-starter/blob/main/src/routes/api/posts/index.json.js
   const posts: (PostMetadata)[] = await Promise.all(
-    Object.entries(import.meta.glob('../../posts/**/*.md')).map(
+    Object.entries(import.meta.glob('../../../posts/**/*.md')).map(
       async ([path, resolver]) => {
         const { metadata }: any = await resolver()
         const slug = basename(dirname(path))
