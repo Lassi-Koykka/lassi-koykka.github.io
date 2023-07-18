@@ -5,7 +5,7 @@ date: "2023-07-17"
 
 <script lang="ts">
   import DemoCanvas from "./DemoCanvas.svelte"
-  import demo_one from "./demo_one.ts"
+  import simple from "./algorithms/simple.ts"
 </script>
 
-<DemoCanvas demo={demo_one} />
+<DemoCanvas demo={simple} />

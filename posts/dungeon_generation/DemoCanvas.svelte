@@ -3,6 +3,7 @@
 
   export let width: number = 720
   export let height: number = 720
+
   export let demo: (canvas: HTMLCanvasElement) => void
   let canvas: HTMLCanvasElement
   onMount(() => {
