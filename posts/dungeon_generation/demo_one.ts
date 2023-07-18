@@ -1,3 +1,6 @@
+import type { RectRoom } from "./dungeon_utils"
+import { getDistance } from "./dungeon_utils";
+
 let ctx: CanvasRenderingContext2D;
 let canvas: HTMLCanvasElement;
 
@@ -29,8 +32,17 @@ function loop(t: number) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	drawBackground();
-	const {rooms} = generateDungeon(4, GRID_HEIGHT / 4, 9);
+	const {rooms, connections} = generateDungeon(4, GRID_HEIGHT / 4, 9);
 	drawRooms(rooms);
+	ctx.save()
+	ctx.strokeStyle = "white"
+	for(const edge of Array.from<string>(connections.keys())) {
+		const [roomA, roomB] = edge.split("-").map(Number).map(idx => rooms[idx])
+		ctx.moveTo(roomA.centerPoint.x, roomA.centerPoint.y)
+		ctx.lineTo(roomB.centerPoint.x, roomB.centerPoint.y)
+		ctx.stroke()
+	}
+	ctx.restore()
 	// drawGridDots();
 	// drawGridLines();
 }
@@ -85,36 +97,23 @@ function drawGridLines() {
 	}
 }
 
-interface Point {
-	x: number,
-	y: number
-}
 
-interface Room {
-	x: number;
-	y: number;
-	w: number;
-	h: number;
-	centerPoint: Point
-}
-
-
-function createRandomRoom(min: number, max: number): Room {
+function createRandomRoom(min: number, max: number): RectRoom {
 	const width = Math.floor(min + Math.random() * (max - min));
 	const height = Math.floor(min + Math.random() * (max - min));
 	const x = Math.floor(Math.random() * (GRID_WIDTH - width));
 	const y = Math.floor(Math.random() * (GRID_HEIGHT - height));
-
-	return { x, y, w: width, h: height, centerPoint: { x: x + width / 2, y: y + height / 2 } };
+	const centerPoint = { x: x * TILE_SIZE + width * TILE_SIZE / 2, y: y * TILE_SIZE + height * TILE_SIZE / 2 }
+	return { x, y, w: width, h: height, centerPoint };
 }
 
-function checkRoomOverlap(a: Room, b: Room) {
+function checkRoomOverlap(a: RectRoom, b: RectRoom) {
 	if (a.x + a.w < b.x - 1 || a.y + a.h < b.y || b.x + b.w < a.x || b.y + b.h < a.y) return false;
 	return true;
 }
 
 function generateDungeon(minRoomSize: number, maxRoomSize: number, maxRooms: number = Infinity) {
-	const rooms: Room[] = [];
+	const rooms: RectRoom[] = [];
 	let retrys = 0;
 	for (let i = 0; i < maxRooms && retrys < 50;) {
 		const room = createRandomRoom(minRoomSize, maxRoomSize);
@@ -126,10 +125,26 @@ function generateDungeon(minRoomSize: number, maxRoomSize: number, maxRooms: num
 		i++;
 	}
 
-	return {rooms}
+	//Connect points
+	const connections = new Map()
+
+	rooms.forEach((roomA, idxA) => {
+		const closest = rooms.filter((_, idx) => idx !== idxA)
+		.map((roomB, idx) => ({idx, distance: getDistance(roomA.centerPoint, roomB.centerPoint)}))
+		.sort((a, b) => a.distance > b.distance ? 1 : -1)
+
+		const edgeNames = closest
+		.slice(0, 2)
+		.map(({idx: idxB}) => idxA < idxB ? [idxA, idxB] : [idxB, idxA])
+		.map(x => x.join("-"))
+
+		edgeNames.forEach(edge => connections.set(edge, true))
+	})
+
+	return {rooms, connections}
 }
 
-function drawRooms(rooms: Room[]) {
+function drawRooms(rooms: RectRoom[]) {
 	ctx.save()
 	ctx.fillStyle = "darkred"
 	rooms.forEach(room => {
