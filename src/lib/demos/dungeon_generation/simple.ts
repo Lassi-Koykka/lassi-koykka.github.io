@@ -1,45 +1,64 @@
-import { getDistance, bresenhamLine } from "./dungeon_utils";
-import type { Point, RectRoom, SimpleDungeon, SimpleDungeonGenerator } from "./types";
+import {
+	getDistance,
+	bresenhamLine,
+	type Point,
+	fillBackground,
+	getRandomColor,
+	drawStartScreen
+} from "$lib/demos/demo_utils";
+import type { SimpleRoom, SimpleDungeon, SimpleDungeonGenerator } from "./dungeon_types";
 
 let ctx: CanvasRenderingContext2D;
 let canvas: HTMLCanvasElement;
 
 // --- ANIMATION PROPERTIES ---
 let lastTime = 0;
-const maxFps = 30;
-const nextFrame = 100;
+const maxFps = 5;
+const nextFrame = 1000 / maxFps;
+
+let requestAnimationFrameHandle: number;
 
 // --- GRID PROPERTIES ---
 const TILE_SIZE = 20;
 let GRID_WIDTH: number, GRID_HEIGHT: number;
 
-export default function main(c: HTMLCanvasElement) {
+let generator: SimpleDungeonGenerator;
+
+export function init(c: HTMLCanvasElement) {
 	canvas = c;
 	ctx = canvas.getContext("2d")!;
 
 	GRID_WIDTH = Math.floor(canvas.width / TILE_SIZE);
 	GRID_HEIGHT = Math.floor(canvas.height / TILE_SIZE);
 
-	const generator = dungeonGenerator(4, GRID_HEIGHT / 4, 9);
+	drawStartScreen(ctx, canvas.width, canvas.height);
+}
+
+export function start() {
+	if (requestAnimationFrameHandle) cancelAnimationFrame(requestAnimationFrameHandle);
+	generator = dungeonGenerator(4, GRID_HEIGHT / 4, 9);
 	// --- START LOOP ---
 	requestAnimationFrame((t) => loop(t, generator));
 }
 
 function loop(t: number, generator: SimpleDungeonGenerator) {
-	const handle = requestAnimationFrame((t) => loop(t, generator));
+	requestAnimationFrameHandle = requestAnimationFrame((t) => loop(t, generator));
 	const delta = t - lastTime;
 	if (delta <= nextFrame) return;
 
 	lastTime = t;
-	const { done, value: {rooms, connections} } = generator.next();
+	const {
+		done,
+		value: { rooms, connections }
+	} = generator.next();
 
-	if(done) {
-		cancelAnimationFrame(handle)
-	};
+	if (done) {
+		cancelAnimationFrame(requestAnimationFrameHandle);
+	}
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	drawBackground();
+	fillBackground(ctx, canvas.width, canvas.height);
 	drawRooms(rooms);
 	ctx.save();
 	ctx.fillStyle = "white";
@@ -57,67 +76,25 @@ function fillGridRect(gridX: number, gridY: number, width: number = 1, height: n
 	ctx.fillRect(x, y, w, h);
 }
 
-function drawBackground() {
-	ctx.save();
-	ctx.fillStyle = "#141617";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	ctx.restore();
-}
-
-function drawGridDots() {
-	ctx.save();
-	ctx.fillStyle = "#FFFFFF77";
-	ctx.lineWidth = 1;
-	for (let row = 0; row < GRID_HEIGHT; row++) {
-		for (let col = 0; col < GRID_WIDTH; col++) {
-			const x = Math.ceil(col * TILE_SIZE + TILE_SIZE / 2);
-			const y = Math.ceil(row * TILE_SIZE + TILE_SIZE / 2);
-			ctx.beginPath();
-			ctx.arc(x, y, TILE_SIZE / 10, 0, Math.PI * 2);
-			ctx.fill();
-			ctx.closePath();
-		}
-	}
-
-	ctx.restore();
-}
-
-function drawGridLines() {
-	ctx.save();
-	ctx.fillStyle = "white";
-	ctx.lineWidth = 1;
-	for (let row = 0; row < GRID_HEIGHT; row++) {
-		ctx.moveTo(0, row * TILE_SIZE);
-		ctx.lineTo(canvas.width, row * TILE_SIZE);
-		ctx.stroke();
-	}
-
-	for (let col = 0; col < GRID_WIDTH; col++) {
-		ctx.moveTo(col * TILE_SIZE, 0);
-		ctx.lineTo(col * TILE_SIZE, canvas.height);
-		ctx.stroke();
-	}
-}
-
-function createRandomRoom(min: number, max: number): RectRoom {
+function createRandomRoom(min: number, max: number): SimpleRoom {
 	const width = Math.floor(min + Math.random() * (max - min));
 	const height = Math.floor(min + Math.random() * (max - min));
 	const x = Math.floor(Math.random() * (GRID_WIDTH - width));
 	const y = Math.floor(Math.random() * (GRID_HEIGHT - height));
 	const centerPoint = { x: x + width / 2, y: y + height / 2 };
-	return { x, y, w: width, h: height, centerPoint };
+	return { x, y, w: width, h: height, centerPoint, color: getRandomColor() };
 }
 
-function checkRoomsTouching(a: RectRoom, b: RectRoom) {
-	if (a.x + a.w < b.x - 1 || a.y + a.h < b.y || b.x + b.w < a.x || b.y + b.h < a.y) return false;
+function checkRoomsTouching(a: SimpleRoom, b: SimpleRoom) {
+	if (a.x + a.w < b.x || a.y + a.h < b.y || b.x + b.w < a.x || b.y + b.h < a.y) return false;
 	return true;
 }
 
-function pointOverlapsRoom(rooms: RectRoom[], p: Point) {
+function pointOverlapsRoom(rooms: SimpleRoom[], p: Point) {
 	return rooms.some((r) => !(p.x < r.x || p.y < r.y || p.x > r.x + r.w - 1 || p.y > r.y + r.h - 1));
 }
 
-function closestRooms(rooms: RectRoom[], curRoomIdx: number) {
+function closestRooms(rooms: SimpleRoom[], curRoomIdx: number) {
 	const roomA = rooms[curRoomIdx];
 	const closest = rooms
 		.map((roomB, idx) => ({
@@ -132,7 +109,7 @@ function closestRooms(rooms: RectRoom[], curRoomIdx: number) {
 }
 
 function toEdgeName(a: number, b: number) {
-	return [a, b].sort((a,b) => a < b ? 1 : -1).join("-")
+	return [a, b].sort((a, b) => (a < b ? 1 : -1)).join("-");
 }
 
 function* dungeonGenerator(
@@ -140,7 +117,7 @@ function* dungeonGenerator(
 	maxRoomSize: number,
 	maxRooms: number = Infinity
 ): Generator<SimpleDungeon> {
-	const rooms: RectRoom[] = [];
+	const rooms: SimpleRoom[] = [];
 	let retrys = 0;
 	for (let i = 0; i < maxRooms && retrys < 50; ) {
 		const room = createRandomRoom(minRoomSize, maxRoomSize);
@@ -154,15 +131,19 @@ function* dungeonGenerator(
 		yield { rooms, connections: [] };
 	}
 
-	const connected: string[] = []
+	const connected: string[] = [];
 	let connections: Point[][] = [];
 
 	for (let i = 0; i < rooms.length; i++) {
-		const closest = closestRooms(rooms, i).slice(0, 2).filter(({idx}) => !connected.includes(toEdgeName(i, idx)));
+		const closest = closestRooms(rooms, i)
+			.slice(0, 2)
+			.filter(({ idx }) => !connected.includes(toEdgeName(i, idx)));
 		const roomA = rooms[i];
 		const newConnections = closest.map((roomB) => {
-			connected.push(toEdgeName(i, roomB.idx))
-			return tunnelBetween(roomA.centerPoint, roomB.centerPoint).filter(p => !pointOverlapsRoom(rooms, p))
+			connected.push(toEdgeName(i, roomB.idx));
+			return tunnelBetween(roomA.centerPoint, roomB.centerPoint).filter(
+				(p) => !pointOverlapsRoom(rooms, p)
+			);
 		});
 		for (const connection of newConnections) {
 			connections.push(connection);
@@ -173,10 +154,10 @@ function* dungeonGenerator(
 	return { rooms, connections };
 }
 
-function drawRooms(rooms: RectRoom[]) {
+function drawRooms(rooms: SimpleRoom[]) {
 	ctx.save();
-	ctx.fillStyle = "darkred";
 	rooms.forEach((room) => {
+		ctx.fillStyle = room.color;
 		fillGridRect(room.x, room.y, room.w, room.h);
 	});
 	ctx.restore();
