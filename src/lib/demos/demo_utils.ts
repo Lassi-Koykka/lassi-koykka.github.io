@@ -31,22 +31,25 @@ export function adjustColorBrightness(color: string, opacity = 1) {
 	);
 }
 
+export function toEdgeName(a: number | string, b: number | string) {
+	return [a, b].sort((a, b) => (a < b ? 1 : -1)).join("-");
+}
+
 // DRAWING
 
-export function drawStartScreen(
+export function drawTitleScreen(
 	ctx: CanvasRenderingContext2D,
+	title: string,
 	canvasWidth: number,
 	canvasHeight: number,
-	textColor: string = "white",
-	bgColor?: string
+	textColor: string = "white"
 ) {
 	ctx.save();
 	ctx.textAlign = "center";
 	ctx.textBaseline = "middle";
 	ctx.fillStyle = textColor;
-	ctx.font = `${canvasWidth / 10}px Arial`;
-	fillBackground(ctx, canvasWidth, canvasHeight, bgColor);
-	ctx.fillText("Click to start", canvasWidth / 2, canvasHeight / 2);
+	ctx.font = `${canvasWidth / 20}px Arial`;
+	ctx.fillText(title, canvasWidth / 2, canvasHeight / 2);
 	ctx.restore();
 }
 
@@ -109,6 +112,23 @@ export function fillBackground(
 	ctx.restore();
 }
 
+export function fillGridCell(
+	ctx: CanvasRenderingContext2D,
+	gridX: number,
+	gridY: number,
+	tileSize: number,
+	color: string = "white"
+) {
+	ctx.save();
+	ctx.fillStyle = color;
+	const x = gridX * tileSize;
+	const y = gridY * tileSize;
+	const w = tileSize;
+	const h = tileSize;
+	ctx.fillRect(x, y, w, h);
+	ctx.restore();
+}
+
 // MATH
 export type Point = {
 	x: number;
@@ -121,6 +141,10 @@ export type Rect = {
 	w: number;
 	h: number;
 };
+
+export function fill2DGrid(w: number, h: number, value: any = 0) {
+	return [...Array(h)].map(() => [...Array(w)].map(() => value));
+}
 
 export function getDistance(a: Point, b: Point) {
 	return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);

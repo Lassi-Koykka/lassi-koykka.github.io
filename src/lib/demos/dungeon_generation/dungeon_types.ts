@@ -7,7 +7,7 @@ export type SimpleRoom = Rect & {
 
 export type SimpleDungeon = {
 	rooms: SimpleRoom[];
-	connections: Point[][];
+	corridors: Point[][];
 };
 
 export type SimpleDungeonGenerator = Generator<SimpleDungeon, SimpleDungeon>;

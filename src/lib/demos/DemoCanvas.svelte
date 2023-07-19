@@ -5,10 +5,10 @@
 	export let height: number = 720;
 
 	export let init: (canvas: HTMLCanvasElement) => void;
-	export let start: () => void;
 
+	let data: any;
 	let canvas: HTMLCanvasElement;
-	let initialized = false;
+	export let initialized = false;
 
 	onMount(() => {
 		init(canvas);
@@ -16,15 +16,13 @@
 	});
 </script>
 
-<canvas
-	bind:this={canvas}
-	width={`${width}`}
-	height={`${height}`}
-	on:click={() => initialized && start()}
-/>
+<slot />
+
+<canvas bind:this={canvas} width={`${width}`} height={`${height}`} />
 
 <style>
 	canvas {
+		background-color: #181818;
 		width: 90%;
 		image-rendering: pixelated;
 	}

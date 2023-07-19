@@ -2,173 +2,182 @@ import {
 	getDistance,
 	bresenhamLine,
 	type Point,
-	fillBackground,
 	getRandomColor,
-	drawStartScreen
+	drawTitleScreen,
+	fillGridCell,
+	toEdgeName,
+	fill2DGrid
 } from "$lib/demos/demo_utils";
+import Demo from "../Demo";
+
 import type { SimpleRoom, SimpleDungeon, SimpleDungeonGenerator } from "./dungeon_types";
 
-let ctx: CanvasRenderingContext2D;
-let canvas: HTMLCanvasElement;
-
-// --- ANIMATION PROPERTIES ---
-let lastTime = 0;
-const maxFps = 5;
-const nextFrame = 1000 / maxFps;
-
-let requestAnimationFrameHandle: number;
-
-// --- GRID PROPERTIES ---
-const TILE_SIZE = 20;
-let GRID_WIDTH: number, GRID_HEIGHT: number;
-
-let generator: SimpleDungeonGenerator;
-
-export function init(c: HTMLCanvasElement) {
-	canvas = c;
-	ctx = canvas.getContext("2d")!;
-
-	GRID_WIDTH = Math.floor(canvas.width / TILE_SIZE);
-	GRID_HEIGHT = Math.floor(canvas.height / TILE_SIZE);
-
-	drawStartScreen(ctx, canvas.width, canvas.height);
+export interface SimpleDungeonGeneratorInput {
+	tileSize: number;
+	targetRoomCount: number;
+	minRoomSize?: number;
+	maxRoomSize?: number;
 }
 
-export function start() {
-	if (requestAnimationFrameHandle) cancelAnimationFrame(requestAnimationFrameHandle);
-	generator = dungeonGenerator(4, GRID_HEIGHT / 4, 9);
-	// --- START LOOP ---
-	requestAnimationFrame((t) => loop(t, generator));
-}
+export default class SimpleDungeonGeneratorDemo extends Demo {
+	tileSize: number;
+	gridWidth: number;
+	gridHeight: number;
+	grid: number[][];
 
-function loop(t: number, generator: SimpleDungeonGenerator) {
-	requestAnimationFrameHandle = requestAnimationFrame((t) => loop(t, generator));
-	const delta = t - lastTime;
-	if (delta <= nextFrame) return;
+	generator: SimpleDungeonGenerator;
+	input: SimpleDungeonGeneratorInput;
 
-	lastTime = t;
-	const {
-		done,
-		value: { rooms, connections }
-	} = generator.next();
+	rooms: SimpleRoom[] = [];
+	corridors: Point[][] = [];
+	connected: string[] = [];
 
-	if (done) {
-		cancelAnimationFrame(requestAnimationFrameHandle);
+	constructor(canvas: HTMLCanvasElement, stepTime: number, input: SimpleDungeonGeneratorInput) {
+		super(canvas, stepTime);
+		const { tileSize, minRoomSize, maxRoomSize, targetRoomCount } = input;
+		this.tileSize = tileSize;
+		this.gridWidth = (canvas.width / tileSize) | 0;
+		this.gridHeight = (canvas.height / tileSize) | 0;
+		this.grid = fill2DGrid(this.gridWidth, this.gridHeight);
+
+		this.input = input;
+		this.generator = this.dungeonGenerator(minRoomSize, maxRoomSize, targetRoomCount);
+
+		drawTitleScreen(this.ctx, "Simple Dungeon Generator", canvas.width, canvas.height);
 	}
 
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	start(input?: SimpleDungeonGeneratorInput) {
+		this.rooms = [];
+		this.corridors = [];
+		this.connected = [];
+		this.initGenerator(input ?? this.input);
+		this.requestAnimationFrameHandle = requestAnimationFrame((t) => this.loop(t));
+	}
 
-	fillBackground(ctx, canvas.width, canvas.height);
-	drawRooms(rooms);
-	ctx.save();
-	ctx.fillStyle = "white";
-	connections.forEach((connection) => connection.forEach((p) => fillGridRect(p.x, p.y)));
-	ctx.restore();
-	// drawGridDots();
-	// drawGridLines();
-}
+	loop(t: number) {
+		this.requestAnimationFrameHandle = requestAnimationFrame((t) => this.loop(t));
+		const delta = t - this.lastTime;
+		if (delta <= this.stepTime) return;
+		this.lastTime = t;
 
-function fillGridRect(gridX: number, gridY: number, width: number = 1, height: number = 1) {
-	const x = gridX * TILE_SIZE;
-	const y = gridY * TILE_SIZE;
-	const w = width * TILE_SIZE;
-	const h = height * TILE_SIZE;
-	ctx.fillRect(x, y, w, h);
-}
+		const dungeon = this.update();
+		this.draw(dungeon);
+	}
 
-function createRandomRoom(min: number, max: number): SimpleRoom {
-	const width = Math.floor(min + Math.random() * (max - min));
-	const height = Math.floor(min + Math.random() * (max - min));
-	const x = Math.floor(Math.random() * (GRID_WIDTH - width));
-	const y = Math.floor(Math.random() * (GRID_HEIGHT - height));
-	const centerPoint = { x: x + width / 2, y: y + height / 2 };
-	return { x, y, w: width, h: height, centerPoint, color: getRandomColor() };
-}
+	update() {
+		const { done, value } = this.generator.next();
 
-function checkRoomsTouching(a: SimpleRoom, b: SimpleRoom) {
-	if (a.x + a.w < b.x || a.y + a.h < b.y || b.x + b.w < a.x || b.y + b.h < a.y) return false;
-	return true;
-}
-
-function pointOverlapsRoom(rooms: SimpleRoom[], p: Point) {
-	return rooms.some((r) => !(p.x < r.x || p.y < r.y || p.x > r.x + r.w - 1 || p.y > r.y + r.h - 1));
-}
-
-function closestRooms(rooms: SimpleRoom[], curRoomIdx: number) {
-	const roomA = rooms[curRoomIdx];
-	const closest = rooms
-		.map((roomB, idx) => ({
-			idx,
-			distance: getDistance(roomA.centerPoint, roomB.centerPoint),
-			...roomB
-		}))
-		.filter(({ distance }) => distance)
-		.sort((a, b) => (a.distance > b.distance ? 1 : -1));
-
-	return closest;
-}
-
-function toEdgeName(a: number, b: number) {
-	return [a, b].sort((a, b) => (a < b ? 1 : -1)).join("-");
-}
-
-function* dungeonGenerator(
-	minRoomSize: number,
-	maxRoomSize: number,
-	maxRooms: number = Infinity
-): Generator<SimpleDungeon> {
-	const rooms: SimpleRoom[] = [];
-	let retrys = 0;
-	for (let i = 0; i < maxRooms && retrys < 50; ) {
-		const room = createRandomRoom(minRoomSize, maxRoomSize);
-		if (rooms.some((anotherRoom) => checkRoomsTouching(room, anotherRoom))) {
-			yield { rooms: [...rooms, room], connections: [] };
-			retrys++;
-			continue;
+		if (done) {
+			cancelAnimationFrame(this.requestAnimationFrameHandle);
 		}
-		rooms.push(room);
-		i++;
-		yield { rooms, connections: [] };
+		return value;
 	}
 
-	const connected: string[] = [];
-	let connections: Point[][] = [];
+	draw({ rooms, corridors }: SimpleDungeon) {
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-	for (let i = 0; i < rooms.length; i++) {
-		const closest = closestRooms(rooms, i)
-			.slice(0, 2)
-			.filter(({ idx }) => !connected.includes(toEdgeName(i, idx)));
-		const roomA = rooms[i];
-		const newConnections = closest.map((roomB) => {
-			connected.push(toEdgeName(i, roomB.idx));
-			return tunnelBetween(roomA.centerPoint, roomB.centerPoint).filter(
-				(p) => !pointOverlapsRoom(rooms, p)
-			);
+		this.ctx.save();
+		rooms.forEach((room) => {
+			for (let y = room.y; y < room.y + room.h; y++) {
+				for (let x = room.x; x < room.x + room.w; x++) {
+					fillGridCell(this.ctx, x, y, this.tileSize, room.color);
+				}
+			}
 		});
-		for (const connection of newConnections) {
-			connections.push(connection);
-			yield { rooms, connections };
-		}
-		yield { rooms, connections };
+		corridors.forEach((corridor) =>
+			corridor.forEach((p) => fillGridCell(this.ctx, p.x, p.y, this.tileSize, "white"))
+		);
+		this.ctx.restore();
 	}
-	return { rooms, connections };
-}
 
-function drawRooms(rooms: SimpleRoom[]) {
-	ctx.save();
-	rooms.forEach((room) => {
-		ctx.fillStyle = room.color;
-		fillGridRect(room.x, room.y, room.w, room.h);
-	});
-	ctx.restore();
-}
+	initGenerator(input: SimpleDungeonGeneratorInput) {
+		const { tileSize, minRoomSize, maxRoomSize, targetRoomCount } = input;
+		this.tileSize = tileSize;
+		this.generator = this.dungeonGenerator(minRoomSize, maxRoomSize, targetRoomCount);
+	}
 
-// Return an L-shaped tunnel between these two points
-function tunnelBetween(p1: Point, p2: Point): Point[] {
-	const corner: Point = Math.random() < 0.5 ? { x: p2.x, y: p1.y } : { x: p1.x, y: p2.y };
-	const line1 = bresenhamLine(p1, corner);
+	*dungeonGenerator(
+		minRoomSize: number = 4,
+		maxRoomSize: number = this.gridWidth / 4,
+		targetRoomCount: number = Infinity
+	): Generator<SimpleDungeon> {
+		let retrys = 0;
+		for (let i = 0; i < targetRoomCount && retrys < 50; ) {
+			const room = this.createRandomRoom(minRoomSize, maxRoomSize);
+			if (this.rooms.some((anotherRoom) => this.checkRoomsTouching(room, anotherRoom))) {
+				yield { rooms: [...this.rooms, room], corridors: this.corridors };
+				retrys++;
+				continue;
+			}
+			this.rooms.push(room);
+			i++;
+			yield this.getRoomsAndConnections();
+		}
 
-	const line2 = bresenhamLine(corner, p2);
+		const connected: string[] = [];
 
-	return [...line1, ...line2];
+		for (let i = 0; i < this.rooms.length; i++) {
+			const closest = this.getClosestRooms(i)
+				.slice(0, 2)
+				.filter(({ idx }) => !connected.includes(toEdgeName(i, idx)));
+			const roomA = this.rooms[i];
+			const newConnections = closest.map((roomB) => {
+				connected.push(toEdgeName(i, roomB.idx));
+				return this.tunnelBetween(roomA.centerPoint, roomB.centerPoint).filter(
+					(p) => !this.pointOverlapsRoom(p)
+				);
+			});
+			for (const connection of newConnections) {
+				this.corridors.push(connection);
+				yield this.getRoomsAndConnections();
+			}
+			yield this.getRoomsAndConnections();
+		}
+		return this.getRoomsAndConnections();
+	}
+
+	getRoomsAndConnections() {
+		return { rooms: this.rooms, corridors: this.corridors };
+	}
+
+	createRandomRoom(min: number, max: number): SimpleRoom {
+		const width = Math.floor(min + Math.random() * (max - min));
+		const height = Math.floor(min + Math.random() * (max - min));
+		const x = Math.floor(Math.random() * (this.gridWidth - width));
+		const y = Math.floor(Math.random() * (this.gridHeight - height));
+		const centerPoint = { x: x + width / 2, y: y + height / 2 };
+		return { x, y, w: width, h: height, centerPoint, color: getRandomColor() };
+	}
+
+	checkRoomsTouching(a: SimpleRoom, b: SimpleRoom) {
+		if (a.x + a.w < b.x || a.y + a.h < b.y || b.x + b.w < a.x || b.y + b.h < a.y) return false;
+		return true;
+	}
+
+	pointOverlapsRoom(p: Point) {
+		return this.rooms.some(
+			(r) => !(p.x < r.x || p.y < r.y || p.x > r.x + r.w - 1 || p.y > r.y + r.h - 1)
+		);
+	}
+
+	tunnelBetween(p1: Point, p2: Point): Point[] {
+		const corner: Point = Math.random() < 0.5 ? { x: p2.x, y: p1.y } : { x: p1.x, y: p2.y };
+		const line1 = bresenhamLine(p1, corner);
+
+		const line2 = bresenhamLine(corner, p2);
+
+		return [...line1, ...line2];
+	}
+	getClosestRooms(curRoomIdx: number) {
+		const roomA = this.rooms[curRoomIdx];
+		const closest = this.rooms
+			.map((roomB, idx) => ({
+				idx,
+				distance: getDistance(roomA.centerPoint, roomB.centerPoint),
+				...roomB
+			}))
+			.filter(({ distance }) => distance)
+			.sort((a, b) => (a.distance > b.distance ? 1 : -1));
+		return closest;
+	}
 }
