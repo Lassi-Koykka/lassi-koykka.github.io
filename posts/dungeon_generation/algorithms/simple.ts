@@ -7,7 +7,7 @@ let canvas: HTMLCanvasElement;
 // --- ANIMATION PROPERTIES ---
 let lastTime = 0;
 const maxFps = 30;
-const nextFrame = 500;
+const nextFrame = 100;
 
 // --- GRID PROPERTIES ---
 const TILE_SIZE = 20;
@@ -131,6 +131,10 @@ function closestRooms(rooms: RectRoom[], curRoomIdx: number) {
 	return closest;
 }
 
+function toEdgeName(a: number, b: number) {
+	return [a, b].sort((a,b) => a < b ? 1 : -1).join("-")
+}
+
 function* dungeonGenerator(
 	minRoomSize: number,
 	maxRoomSize: number,
@@ -150,14 +154,16 @@ function* dungeonGenerator(
 		yield { rooms, connections: [] };
 	}
 
+	const connected: string[] = []
 	let connections: Point[][] = [];
 
 	for (let i = 0; i < rooms.length; i++) {
-		const closest = closestRooms(rooms, i).slice(0, 2);
+		const closest = closestRooms(rooms, i).slice(0, 2).filter(({idx}) => !connected.includes(toEdgeName(i, idx)));
 		const roomA = rooms[i];
-		const newConnections = closest.map((roomB) =>
-			tunnelBetween(roomA.centerPoint, roomB.centerPoint).filter(p => !pointOverlapsRoom(rooms, p))
-		);
+		const newConnections = closest.map((roomB) => {
+			connected.push(toEdgeName(i, roomB.idx))
+			return tunnelBetween(roomA.centerPoint, roomB.centerPoint).filter(p => !pointOverlapsRoom(rooms, p))
+		});
 		for (const connection of newConnections) {
 			connections.push(connection);
 			yield { rooms, connections };
