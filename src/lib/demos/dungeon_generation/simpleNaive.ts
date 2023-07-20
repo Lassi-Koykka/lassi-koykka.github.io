@@ -6,33 +6,46 @@ import {
 	drawTitleScreen,
 	fillGridCell,
 	toEdgeName,
-	fill2DGrid
+	fill2DGrid,
+	type Rect
 } from "$lib/demos/demo_utils";
 import Demo from "../Demo";
 
-import type { SimpleRoom, SimpleDungeon, SimpleDungeonGenerator } from "./dungeon_types";
+export type SimpleRoom = Rect & {
+	color: string;
+	centerPoint: Point;
+};
 
-export interface SimpleDungeonGeneratorInput {
+export type SimpleDungeon = {
+	rooms: SimpleRoom[];
+	corridors: Point[][];
+};
+
+export type SimpleDungeonGenerator = Generator<SimpleDungeon, SimpleDungeon>;
+
+export interface SimpleNaiveDungeonInput {
 	tileSize: number;
 	targetRoomCount: number;
 	minRoomSize?: number;
 	maxRoomSize?: number;
 }
 
-export default class SimpleDungeonGeneratorDemo extends Demo {
+export default class SimpleNaiveDungeon extends Demo {
+	started = false;
+
 	tileSize: number;
 	gridWidth: number;
 	gridHeight: number;
 	grid: number[][];
 
 	generator: SimpleDungeonGenerator;
-	input: SimpleDungeonGeneratorInput;
+	input: SimpleNaiveDungeonInput;
 
 	rooms: SimpleRoom[] = [];
 	corridors: Point[][] = [];
 	connected: string[] = [];
 
-	constructor(canvas: HTMLCanvasElement, stepTime: number, input: SimpleDungeonGeneratorInput) {
+	constructor(canvas: HTMLCanvasElement, stepTime: number, input: SimpleNaiveDungeonInput) {
 		super(canvas, stepTime);
 		const { tileSize, minRoomSize, maxRoomSize, targetRoomCount } = input;
 		this.tileSize = tileSize;
@@ -46,7 +59,8 @@ export default class SimpleDungeonGeneratorDemo extends Demo {
 		drawTitleScreen(this.ctx, "Simple Dungeon Generator", canvas.width, canvas.height);
 	}
 
-	start(input?: SimpleDungeonGeneratorInput) {
+	start(input?: SimpleNaiveDungeonInput) {
+		this.started = true;
 		this.rooms = [];
 		this.corridors = [];
 		this.connected = [];
@@ -90,7 +104,7 @@ export default class SimpleDungeonGeneratorDemo extends Demo {
 		this.ctx.restore();
 	}
 
-	initGenerator(input: SimpleDungeonGeneratorInput) {
+	initGenerator(input: SimpleNaiveDungeonInput) {
 		const { tileSize, minRoomSize, maxRoomSize, targetRoomCount } = input;
 		this.tileSize = tileSize;
 		this.generator = this.dungeonGenerator(minRoomSize, maxRoomSize, targetRoomCount);
@@ -103,13 +117,13 @@ export default class SimpleDungeonGeneratorDemo extends Demo {
 	): Generator<SimpleDungeon> {
 		let retrys = 0;
 		for (let i = 0; i < targetRoomCount && retrys < 50; ) {
-			const room = this.createRandomRoom(minRoomSize, maxRoomSize);
-			if (this.rooms.some((anotherRoom) => this.checkRoomsTouching(room, anotherRoom))) {
-				yield { rooms: [...this.rooms, room], corridors: this.corridors };
+			const newRoom = this.createRandomRoom(minRoomSize, maxRoomSize);
+			if (this.rooms.some((anotherRoom) => this.checkRoomsTouching(newRoom, anotherRoom))) {
+				yield { rooms: [...this.rooms, newRoom], corridors: this.corridors };
 				retrys++;
 				continue;
 			}
-			this.rooms.push(room);
+			this.rooms.push(newRoom);
 			i++;
 			yield this.getRoomsAndConnections();
 		}
@@ -117,13 +131,16 @@ export default class SimpleDungeonGeneratorDemo extends Demo {
 		const connected: string[] = [];
 
 		for (let i = 0; i < this.rooms.length; i++) {
+			// Get two closest rooms.
+			// Discard if already connected
 			const closest = this.getClosestRooms(i)
 				.slice(0, 2)
 				.filter(({ idx }) => !connected.includes(toEdgeName(i, idx)));
-			const roomA = this.rooms[i];
-			const newConnections = closest.map((roomB) => {
-				connected.push(toEdgeName(i, roomB.idx));
-				return this.tunnelBetween(roomA.centerPoint, roomB.centerPoint).filter(
+			const curRoom = this.rooms[i];
+			const newConnections = closest.map((room) => {
+				connected.push(toEdgeName(i, room.idx));
+				return this.tunnelBetween(curRoom.centerPoint, room.centerPoint).filter(
+					// Filter out corridors inside
 					(p) => !this.pointOverlapsRoom(p)
 				);
 			});
@@ -168,6 +185,7 @@ export default class SimpleDungeonGeneratorDemo extends Demo {
 
 		return [...line1, ...line2];
 	}
+
 	getClosestRooms(curRoomIdx: number) {
 		const roomA = this.rooms[curRoomIdx];
 		const closest = this.rooms

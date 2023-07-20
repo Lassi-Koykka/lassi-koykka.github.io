@@ -150,6 +150,10 @@ export function getDistance(a: Point, b: Point) {
 	return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
 }
 
+export function getDistanceSquared(a: Point, b: Point) {
+	return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
+}
+
 export function toAbsolutePosition(p: Point, tileSize: number) {
 	return { x: p.x * tileSize, y: p.y * tileSize };
 }
